@@ -2,3 +2,25 @@ api_platform:
   formats:
     json:
       mime_types: ['application/json']
+    jsonld:
+      mime_types: ['application/ld+json']
+    html:
+      mime_types: ['text/html']
+
+  # Enable the Swagger documentation and export.
+  enable_swagger: true
+
+  # Enable Swagger UI.
+  enable_swagger_ui: true
+
+  # Enable ReDoc.
+  enable_re_doc: true
+
+  # Enable the entrypoint.
+  enable_entrypoint: true
+
+  # Enable the docs.
+  enable_docs: true
+  
+  # Enable the data collector and the WebProfilerBundle integration.
+  enable_profiler: true

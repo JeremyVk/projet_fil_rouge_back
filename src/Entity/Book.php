@@ -18,6 +18,7 @@ class Book extends Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:books'])]
     private ?int $id = null;
 
     #[ORM\Column(name: 'isbn_number')]
