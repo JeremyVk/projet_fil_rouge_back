@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:books', 'read:article']],
-    denormalizationContext: ['groups' => ['write: books']],
+    denormalizationContext: ['groups' => ['write:books']],
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 class Book extends Article
