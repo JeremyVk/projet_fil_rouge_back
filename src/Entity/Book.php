@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Abstract\Article;
-use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BookRepository;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
@@ -13,6 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['read:books', 'read:article']],
     denormalizationContext: ['groups' => ['write: books']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 class Book extends Article
 {
     #[ORM\Id]
