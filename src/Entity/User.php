@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\Post;
 use App\State\UserPostProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -18,6 +22,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     denormalizationContext: ['groups' => ['write:users']],
 )]
 #[Post(processor: UserPostProcessor::class)]
+#[GetCollection()]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
+#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -43,12 +50,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(name: 'firstname', length: 100)]
     #[Groups(['read:users', 'write:users'])]
-    #[Assert\Length(255)]
     private string $firstname ;
 
     #[ORM\Column(name: 'lastname', length: 255)]
     #[Groups(['read:users', 'write:users'])]
-    #[Assert\Length(255)]
     private string $lastname;
 
     public function getId(): int
