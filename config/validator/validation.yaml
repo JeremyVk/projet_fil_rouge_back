@@ -1,0 +1,25 @@
+App\Entity\User:
+  constraints:
+    - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+        fields: [email]
+        message: 'app.form.error.email.unique'
+  properties:
+    firstname:
+      - Length:
+          min: 3
+          max: 20
+          maxMessage: 'app.form.error.firstname.max_length'
+          minMessage: 'app.form.error.firstname.min_length'
+    lastname:
+      - Length:
+          min: 2
+          max: 30
+          maxMessage: 'app.form.error.lastname.max_length'
+          minMessage: 'app.form.error.lastname.min_length'
+    email:
+      - Email:
+          message: 'app.form.error.email.type'
+    password:
+      - Length:
+          min: 8
+          minMessage: 'app.form.error.password.min_length'
