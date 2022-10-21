@@ -11,9 +11,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -24,7 +22,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Post(processor: UserPostProcessor::class)]
 #[GetCollection()]
 #[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
-#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -34,7 +31,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['read:users', 'write:users'])]
-    #[Assert\Email()]
     private string $email;
 
     #[ORM\Column]
