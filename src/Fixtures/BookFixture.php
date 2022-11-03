@@ -88,7 +88,7 @@ class BookFixture extends Fixture
             $book->setResume($dataBook['resume']);
             $book->setUnitPrice($dataBook['unitPrice']);
             $book->setStock($dataBook['stock']);
-            $book->setImage('image/image');
+            $book->setImage('assets/images/javascript.jpeg');
             $book->setIsbnNumber($dataBook['isbnNumber']);
             $book->setFormat($dataBook['format']);
             $book->setEditor($dataBook['editor']);
