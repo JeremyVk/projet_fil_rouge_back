@@ -8,14 +8,19 @@ use App\Repository\BookRepository;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Filters\AllBookSearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+
+
+// #[ApiFilter(AllBookSearchFilter::class, properties: ["title" => "partial", "resume" => "partial", "editor"])]
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:books', 'read:article']],
     denormalizationContext: ['groups' => ['write:books']],
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
+#[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
 class Book extends Article
 {
     #[ORM\Id]
