@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-my-secret-pw}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-2i_book}
       MYSQL_USER: 2ibook
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-lemdp}
       MYSQL_TCP_PORT: 3307
       TZ: Europe/Paris
     ports:
@@ -22,7 +22,7 @@ services:
       - "8000:80"
     environment:
       name: "2ibook"
-      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@database:${MYSQL_TCP_PORT}/${MYSQL_DATABASE}"
+      DATABASE_URL: "mysql://2ibook:lemdp@database:3307/2i_book"
 
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
