@@ -17,12 +17,15 @@ services:
       - mysql-data:/var/lib/mysql
 
   app:
-    image: 2ibook:latest
+    build:
+      context: .
     ports:
       - "8000:80"
     environment:
       name: "2ibook"
       DATABASE_URL: "mysql://2ibook:lemdp@database:3307/2i_book"
+    volumes:
+      - .:/var/www:cached
 
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw

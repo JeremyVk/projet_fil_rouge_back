@@ -1,10 +1,8 @@
 start:
-	docker compose up -d --remove-orphans
-	symfony server:start -d
+	docker-compose up -d --remove-orphans
 
 stop:
-	docker compose stop
-	symfony server:stop
+	docker-compose stop
 
 build:
 	composer self-update
