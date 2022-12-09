@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Abstract\Article;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use ApiPlatform\Metadata\ApiFilter;
@@ -41,6 +43,15 @@ class Book extends Article
     #[Groups(['read:books', 'write:books'])]
     private ?string $editor = null;
 
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['read:books', 'write:books'])]
+    private ?Collection $bookVariants;
+
+    public function __construct()
+    {
+        $this->bookVariants = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +89,34 @@ class Book extends Article
     public function setEditor(string $editor): self
     {
         $this->editor = $editor;
+
+        return $this;
+    }
+
+    /**
+     * @return ?Collection<int, BookVariant>
+     */
+    public function getBookVariants(): ?Collection
+    {
+        return $this->bookVariants;
+    }
+
+    public function addBookVariant(BookVariant $bookVariant): void
+    {
+        if (!$this->bookVariants->contains($bookVariant)) {
+            $this->bookVariants->add($bookVariant);
+            $bookVariant->setBook($this);
+        }
+    }
+
+    public function removeBookVariant(BookVariant $bookVariant): self
+    {
+        if ($this->bookVariants->removeElement($bookVariant)) {
+            // set the owning side to null (unless already changed)
+            if ($bookVariant->getBook() === $this) {
+                $bookVariant->setBook(null);
+            }
+        }
 
         return $this;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Fixtures;
 
 use App\Entity\Book;
+use App\Entity\BookVariant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -19,9 +20,19 @@ class BookFixture extends Fixture
             'editor' => 'Lys Bleu',
             'author' => 'cyberTech',
             'gender' => 'Apprentissage Informatique',
+            'image' => 'assets/images/javascript.jpeg',
             'unitPrice' => 4000,
             'stock' => 10,
-            'image' => 'assets/images/javascript.jpeg'
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 4000,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                ],
+            ]
         ],
         [
             'title' =>   'Apprendre le CSS',
@@ -98,6 +109,18 @@ class BookFixture extends Fixture
             $book->setIsbnNumber($dataBook['isbnNumber']);
             $book->setFormat($dataBook['format']);
             $book->setEditor($dataBook['editor']);
+
+            if(isset($dataBook['variants'])) {
+                foreach($dataBook['variants'] as $variant) {
+                    // dd($variant['stock']);
+                    $newVariant = new BookVariant();
+                    // dd($variant);
+                    $newVariant->setStock($variant['stock']);
+                    $newVariant->setUnitPrice($variant['unitPrice']);
+                    $book->addBookVariant($newVariant);
+                }
+            }
+            
 
             $manager->persist($book);
 
