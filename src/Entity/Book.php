@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Abstract\Article;
+use App\Abstract\BaseArticle;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,21 +23,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
 #[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
-class Book extends Article
+class Book extends BaseArticle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['read:books'])]
     private ?int $id = null;
-
-    #[ORM\Column(name: 'isbn_number')]
-    #[Groups(['read:books', 'write:books'])]
-    private ?int $isbnNumber = null;
-
-    #[ORM\Column(length: 255, name: 'format')]
-    #[Groups(['read:books', 'write:books'])]
-    private ?string $format = null;
 
     #[ORM\Column(length: 255, name: 'editor')]
     #[Groups(['read:books', 'write:books'])]
@@ -55,30 +47,6 @@ class Book extends Article
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIsbnNumber(): ?int
-    {
-        return $this->isbnNumber;
-    }
-
-    public function setIsbnNumber(int $isbnNumber): self
-    {
-        $this->isbnNumber = $isbnNumber;
-
-        return $this;
-    }
-
-    public function getFormat(): ?string
-    {
-        return $this->format;
-    }
-
-    public function setFormat(string $format): self
-    {
-        $this->format = $format;
-
-        return $this;
     }
 
     public function getEditor(): ?string
