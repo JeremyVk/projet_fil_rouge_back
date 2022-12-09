@@ -21,6 +21,7 @@ class BookFixture extends Fixture
             'gender' => 'Apprentissage Informatique',
             'unitPrice' => 4000,
             'stock' => 10,
+            'image' => 'assets/images/javascript.jpeg'
         ],
         [
             'title' =>   'Apprendre le CSS',
@@ -32,6 +33,7 @@ class BookFixture extends Fixture
             'gender' => 'Apprentissage Informatique',
             'unitPrice' => 4000,
             'stock' => 10,
+            'image' => 'assets/images/css3.jpeg'
         ],
         [
             'title' =>    'Le javascript en 5 étapes',
@@ -43,6 +45,7 @@ class BookFixture extends Fixture
             'gender' => 'Apprentissage Informatique',
             'unitPrice' => 3500,
             'stock' => 10,
+            'image' => 'assets/images/javascript.jpeg'
         ],
         [
             'title' =>    'Php de A à Z',
@@ -54,6 +57,7 @@ class BookFixture extends Fixture
             'gender' => 'Apprentissage Informatique',
             'unitPrice' => 3500,
             'stock' => 10,
+            'image' => 'assets/images/php-8.jpeg'
         ],
         [
             'title' =>    'Symfony 6.1',
@@ -65,6 +69,7 @@ class BookFixture extends Fixture
             'gender' => 'Apprentissage Informatique',
             'unitPrice' => 3500,
             'stock' => 10,
+            'image' => 'assets/images/javascript.jpeg'
         ],
         [
             'title' =>    'Apprendre à concevoir une Api avec node js',
@@ -76,6 +81,7 @@ class BookFixture extends Fixture
             'gender' => 'Apprentissage Informatique',
             'unitPrice' => 3500,
             'stock' => 10,
+            'image' => 'assets/images/javascript.jpeg'
         ],
     ];
 
@@ -88,7 +94,7 @@ class BookFixture extends Fixture
             $book->setResume($dataBook['resume']);
             $book->setUnitPrice($dataBook['unitPrice']);
             $book->setStock($dataBook['stock']);
-            $book->setImage('assets/images/javascript.jpeg');
+            $book->setImage($dataBook['image']);
             $book->setIsbnNumber($dataBook['isbnNumber']);
             $book->setFormat($dataBook['format']);
             $book->setEditor($dataBook['editor']);
