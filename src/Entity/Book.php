@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['read:books', 'read:article']],
     denormalizationContext: ['groups' => ['write:books']],
+    order: ['variants.unitPrice' => 'ASC']
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
 #[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
@@ -37,11 +38,11 @@ class Book extends BaseArticle
 
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
     #[Groups(['read:books', 'write:books'])]
-    private ?Collection $bookVariants;
+    private Collection $variants;
 
     public function __construct()
     {
-        $this->bookVariants = new ArrayCollection();
+        $this->variants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,27 +63,27 @@ class Book extends BaseArticle
     }
 
     /**
-     * @return ?Collection<int, BookVariant>
+     * @return ?Collection<int, variant>
      */
-    public function getBookVariants(): ?Collection
+    public function getVariants(): ?Collection
     {
-        return $this->bookVariants;
+        return $this->variants;
     }
 
-    public function addBookVariant(BookVariant $bookVariant): void
+    public function addVariant(BookVariant $variant): void
     {
-        if (!$this->bookVariants->contains($bookVariant)) {
-            $this->bookVariants->add($bookVariant);
-            $bookVariant->setBook($this);
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setBook($this);
         }
     }
 
-    public function removeBookVariant(BookVariant $bookVariant): self
+    public function removeVariant(BookVariant $variant): self
     {
-        if ($this->bookVariants->removeElement($bookVariant)) {
+        if ($this->variants->removeElement($variant)) {
             // set the owning side to null (unless already changed)
-            if ($bookVariant->getBook() === $this) {
-                $bookVariant->setBook(null);
+            if ($variant->getBook() === $this) {
+                $variant->setBook(null);
             }
         }
 

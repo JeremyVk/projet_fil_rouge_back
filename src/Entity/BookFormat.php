@@ -26,7 +26,7 @@ class BookFormat
     #[Groups(['read:bookFormats', 'read:bookVariant', 'read:books'])]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: BookVariant::class, inversedBy: 'bookFormats')]
+    #[ORM\OneToMany(targetEntity: BookVariant::class, mappedBy: 'format')]
     // #[Groups([])]
     private Collection $books;
 

@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: BookVariantRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant']],
-    denormalizationContext: ['groups' => ['write:bookVariant', 'write:baseVariant']]
+    denormalizationContext: ['groups' => ['write:bookVariant', 'write:baseVariant']],
 )]
 class BookVariant extends BaseVariant
 {
@@ -23,7 +23,7 @@ class BookVariant extends BaseVariant
     #[Groups(['read:books', 'write:books', 'read:bookVariant', 'write:bookVariant'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookVariants')]
+    #[ORM\ManyToOne(inversedBy: 'variants')]
     #[ORM\JoinColumn(nullable: false, name: 'book_id')]
     #[Groups(['read:bookVariant', 'write:bookVariant'])]
     private Book $book;
@@ -32,14 +32,9 @@ class BookVariant extends BaseVariant
     #[Groups(['read:books', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private string $isbnNumber;
 
-    #[ORM\ManyToMany(targetEntity: BookFormat::class, mappedBy: 'books')]
+    #[ORM\ManyToOne(targetEntity: BookFormat::class, inversedBy: 'books')]
     #[Groups(['read:books', 'write:books','read:bookVariant', 'write:bookVariant'])]
-    private Collection $bookFormats;
-
-    public function __construct()
-    {
-        $this->bookFormats = new ArrayCollection();
-    }
+    private BookFormat $format;
 
     public function getId(): ?int
     {
@@ -68,30 +63,14 @@ class BookVariant extends BaseVariant
         return $this;
     }
 
-    /**
-     * @return Collection<int, BookFormat>
-     */
-    public function getBookFormats(): Collection
+    public function getformat(): BookFormat
     {
-        return $this->bookFormats;
+        return $this->format;
     }
 
-    public function addBookFormat(BookFormat $bookFormat): self
+    public function setFormat(BookFormat $format)
     {
-        if (!$this->bookFormats->contains($bookFormat)) {
-            $this->bookFormats->add($bookFormat);
-            $bookFormat->addBook($this);
-        }
-
-        return $this;
+        $this->format = $format;
     }
 
-    public function removeBookFormat(BookFormat $bookFormat): self
-    {
-        if ($this->bookFormats->removeElement($bookFormat)) {
-            $bookFormat->removeBook($this);
-        }
-
-        return $this;
-    }
 }

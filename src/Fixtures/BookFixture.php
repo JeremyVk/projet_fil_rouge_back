@@ -27,6 +27,22 @@ class BookFixture extends Fixture
                     'isbnNumber' => 15786896,
                     'format' => 1,
                 ],
+            ]
+        ],
+        [
+            'title' =>   'Apprendre le CSS',
+            'resume' => "Faites de beaux sites avec le CSS",
+            'editor' => 'Hachette',
+            'author' => 'cssLoveur',
+            'gender' => 'Apprentissage Informatique',
+            'image' => 'assets/images/css3.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 4000,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
                 [
                     'stock' => 30,
                     'unitPrice' => 550,
@@ -36,20 +52,26 @@ class BookFixture extends Fixture
             ]
         ],
         [
-            'title' =>   'Apprendre le CSS',
-            'resume' => "Faites de beaux sites avec le CSS",
-            'editor' => 'Hachette',
-            'author' => 'cssLoveur',
-            'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/css3.jpeg'
-        ],
-        [
             'title' =>    'Le javascript en 5 étapes',
             'resume' => "Les étapes clef pour apprendre le javascript",
             'editor' => 'Aparis',
             'author' => 'JsPlayer',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg'
+            'image' => 'assets/images/javascript.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 4000,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                    'isbnNumber' => 157868969,
+                    'format' => 2,
+                ],
+            ]
         ],
         [
             'title' =>    'Php de A à Z',
@@ -57,7 +79,21 @@ class BookFixture extends Fixture
             'editor' => 'Kartier',
             'author' => 'ElephantMan',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/php-8.jpeg'
+            'image' => 'assets/images/php-8.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 4000,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                    'isbnNumber' => 157868969,
+                    'format' => 2,
+                ],
+            ]
         ],
         [
             'title' =>    'Symfony 6.1',
@@ -65,7 +101,21 @@ class BookFixture extends Fixture
             'editor' => 'Php music',
             'author' => 'Mozart',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg'
+            'image' => 'assets/images/javascript.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 4000,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                    'isbnNumber' => 157868969,
+                    'format' => 2,
+                ],
+            ]
         ],
         [
             'title' =>    'Apprendre à concevoir une Api avec node js',
@@ -73,7 +123,21 @@ class BookFixture extends Fixture
             'editor' => 'Aparis',
             'author' => 'JsPlayer',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg'
+            'image' => 'assets/images/javascript.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 1500,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                    'isbnNumber' => 157868969,
+                    'format' => 2,
+                ],
+            ]
         ],
     ];
 
@@ -98,8 +162,8 @@ class BookFixture extends Fixture
                     $newVariant->setUnitPrice($variant['unitPrice']);
                     $newVariant->setIsbnNumber($variant['isbnNumber']);
                     $format = $this->bookFormatRepository->find($variant['format']);
-                    $newVariant->addBookFormat($format);
-                    $book->addBookVariant($newVariant);
+                    $newVariant->setFormat($format);
+                    $book->addVariant($newVariant);
                 }
             }
             
