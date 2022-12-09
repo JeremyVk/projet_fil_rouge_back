@@ -7,7 +7,7 @@ namespace App\Abstract;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-abstract class Article
+abstract class BaseArticle
 {
     #[ORM\Column(name: 'title', length: 255)]
     #[Groups(['read:article', 'write:article'])]
@@ -17,18 +17,9 @@ abstract class Article
     #[Groups(['read:article', 'write:article'])]
     protected string $resume;
 
-    #[ORM\Column(name: 'unit_price')]
-    #[Groups(['read:article', 'write:article'])]
-    protected float $unitPrice;
-
-    #[ORM\Column(name: 'stock')]
-    #[Groups(['read:article', 'write:article'])]
-    protected int $stock;
-
     #[ORM\Column(name: 'image', length: 255)]
     #[Groups(['read:article', 'write:article'])]
     protected string $image;
-
 
     /**
      * Get the value of title
@@ -74,54 +65,6 @@ abstract class Article
     public function setResume(string $resume): self
     {
         $this->resume = $resume;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of unitPrice
-     *
-     * @return float
-     */
-    public function getUnitPrice(): float
-    {
-        return $this->unitPrice;
-    }
-
-    /**
-     * Set the value of unitPrice
-     *
-     * @param float $unitPrice
-     *
-     * @return self
-     */
-    public function setUnitPrice(float $unitPrice): self
-    {
-        $this->unitPrice = $unitPrice;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of stock
-     *
-     * @return int
-     */
-    public function getStock(): int
-    {
-        return $this->stock;
-    }
-
-    /**
-     * Set the value of stock
-     *
-     * @param int $stock
-     *
-     * @return self
-     */
-    public function setStock(int $stock): self
-    {
-        $this->stock = $stock;
 
         return $this;
     }

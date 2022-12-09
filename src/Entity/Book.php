@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use App\Abstract\Article;
+use App\Abstract\BaseArticle;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use ApiPlatform\Metadata\ApiFilter;
@@ -21,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
 #[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
-class Book extends Article
+class Book extends BaseArticle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,45 +31,22 @@ class Book extends Article
     #[Groups(['read:books'])]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'isbn_number')]
-    #[Groups(['read:books', 'write:books'])]
-    private ?int $isbnNumber = null;
-
-    #[ORM\Column(length: 255, name: 'format')]
-    #[Groups(['read:books', 'write:books'])]
-    private ?string $format = null;
-
     #[ORM\Column(length: 255, name: 'editor')]
     #[Groups(['read:books', 'write:books'])]
     private ?string $editor = null;
 
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['read:books', 'write:books'])]
+    private ?Collection $bookVariants;
+
+    public function __construct()
+    {
+        $this->bookVariants = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIsbnNumber(): ?int
-    {
-        return $this->isbnNumber;
-    }
-
-    public function setIsbnNumber(int $isbnNumber): self
-    {
-        $this->isbnNumber = $isbnNumber;
-
-        return $this;
-    }
-
-    public function getFormat(): ?string
-    {
-        return $this->format;
-    }
-
-    public function setFormat(string $format): self
-    {
-        $this->format = $format;
-
-        return $this;
     }
 
     public function getEditor(): ?string
@@ -78,6 +57,34 @@ class Book extends Article
     public function setEditor(string $editor): self
     {
         $this->editor = $editor;
+
+        return $this;
+    }
+
+    /**
+     * @return ?Collection<int, BookVariant>
+     */
+    public function getBookVariants(): ?Collection
+    {
+        return $this->bookVariants;
+    }
+
+    public function addBookVariant(BookVariant $bookVariant): void
+    {
+        if (!$this->bookVariants->contains($bookVariant)) {
+            $this->bookVariants->add($bookVariant);
+            $bookVariant->setBook($this);
+        }
+    }
+
+    public function removeBookVariant(BookVariant $bookVariant): self
+    {
+        if ($this->bookVariants->removeElement($bookVariant)) {
+            // set the owning side to null (unless already changed)
+            if ($bookVariant->getBook() === $this) {
+                $bookVariant->setBook(null);
+            }
+        }
 
         return $this;
     }

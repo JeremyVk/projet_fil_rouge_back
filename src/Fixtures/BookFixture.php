@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Fixtures;
 
 use App\Entity\Book;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\BookVariant;
 use Doctrine\Persistence\ObjectManager;
+use App\Repository\BookFormatRepository;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class BookFixture extends Fixture
 {
@@ -14,76 +16,70 @@ class BookFixture extends Fixture
         [
             'title' =>  'Apprendre le HTML',
             'resume' => "Un classique du HTML",
-            'isbnNumber' => 15786896,
-            'format' => 'brochet',
             'editor' => 'Lys Bleu',
             'author' => 'cyberTech',
             'gender' => 'Apprentissage Informatique',
-            'unitPrice' => 4000,
-            'stock' => 10,
-            'image' => 'assets/images/javascript.jpeg'
+            'image' => 'assets/images/javascript.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 4000,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                    'isbnNumber' => 157868969,
+                    'format' => 2,
+                ],
+            ]
         ],
         [
             'title' =>   'Apprendre le CSS',
             'resume' => "Faites de beaux sites avec le CSS",
-            'isbnNumber' => 15786821,
-            'format' => 'Poche',
             'editor' => 'Hachette',
             'author' => 'cssLoveur',
             'gender' => 'Apprentissage Informatique',
-            'unitPrice' => 4000,
-            'stock' => 10,
             'image' => 'assets/images/css3.jpeg'
         ],
         [
             'title' =>    'Le javascript en 5 étapes',
             'resume' => "Les étapes clef pour apprendre le javascript",
-            'isbnNumber' => 1578612,
-            'format' => 'Poche',
             'editor' => 'Aparis',
             'author' => 'JsPlayer',
             'gender' => 'Apprentissage Informatique',
-            'unitPrice' => 3500,
-            'stock' => 10,
             'image' => 'assets/images/javascript.jpeg'
         ],
         [
             'title' =>    'Php de A à Z',
             'resume' => "Le language le plus utilisé pour le web !",
-            'isbnNumber' => 1578612,
-            'format' => 'Broché',
             'editor' => 'Kartier',
             'author' => 'ElephantMan',
             'gender' => 'Apprentissage Informatique',
-            'unitPrice' => 3500,
-            'stock' => 10,
             'image' => 'assets/images/php-8.jpeg'
         ],
         [
             'title' =>    'Symfony 6.1',
             'resume' => "Le framewok PHP le plus utilisé en France.",
-            'isbnNumber' => 1578612,
-            'format' => 'Poche',
             'editor' => 'Php music',
             'author' => 'Mozart',
             'gender' => 'Apprentissage Informatique',
-            'unitPrice' => 3500,
-            'stock' => 10,
             'image' => 'assets/images/javascript.jpeg'
         ],
         [
             'title' =>    'Apprendre à concevoir une Api avec node js',
             'resume' => "Les étapes clef pour apprendre node js",
-            'isbnNumber' => 1578612,
-            'format' => 'Poche',
             'editor' => 'Aparis',
             'author' => 'JsPlayer',
             'gender' => 'Apprentissage Informatique',
-            'unitPrice' => 3500,
-            'stock' => 10,
             'image' => 'assets/images/javascript.jpeg'
         ],
     ];
+
+    public function __construct(private BookFormatRepository $bookFormatRepository)
+    {
+    }
 
 
     public function load(ObjectManager $manager)
@@ -92,12 +88,21 @@ class BookFixture extends Fixture
             $book = new Book();
             $book->setTitle($dataBook['title']);
             $book->setResume($dataBook['resume']);
-            $book->setUnitPrice($dataBook['unitPrice']);
-            $book->setStock($dataBook['stock']);
             $book->setImage($dataBook['image']);
-            $book->setIsbnNumber($dataBook['isbnNumber']);
-            $book->setFormat($dataBook['format']);
             $book->setEditor($dataBook['editor']);
+
+            if(isset($dataBook['variants'])) {
+                foreach($dataBook['variants'] as $variant) {
+                    $newVariant = new BookVariant();
+                    $newVariant->setStock($variant['stock']);
+                    $newVariant->setUnitPrice($variant['unitPrice']);
+                    $newVariant->setIsbnNumber($variant['isbnNumber']);
+                    $format = $this->bookFormatRepository->find($variant['format']);
+                    $newVariant->addBookFormat($format);
+                    $book->addBookVariant($newVariant);
+                }
+            }
+            
 
             $manager->persist($book);
 

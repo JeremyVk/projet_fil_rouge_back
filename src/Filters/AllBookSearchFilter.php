@@ -24,8 +24,8 @@ final class AllBookSearchFilter extends AbstractFilter
             ->setParameter('value', "%" . $query . "%");  
         } 
 
-        $queryBuilder
-        ->orderBy("o.stock", "DESC");
+        // $queryBuilder
+        // ->orderBy("o.stock", "DESC");
 }
 
     // This function is only used to hook in documentation generators (supported by Swagger and Hydra)
