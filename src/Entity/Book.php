@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:books', 'read:article']],
+    normalizationContext: ['groups' => ['read:article', 'read:article', 'read:bookVariant', 'read:baseVariant']],
     denormalizationContext: ['groups' => ['write:books']],
     order: ['variants.unitPrice' => 'ASC']
 )]
@@ -29,16 +29,15 @@ class Book extends BaseArticle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:books'])]
+    #[Groups(['read:article', 'read:baseVariant'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, name: 'editor')]
-    #[Groups(['read:books', 'write:books'])]
+    #[Groups(['read:article', 'write:books', 'read:baseVariant'])]
     private ?string $editor = null;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
-    #[Groups(['read:books', 'write:books'])]
-    private Collection $variants;
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
+    protected Collection $variants;
 
     public function __construct()
     {
@@ -70,23 +69,5 @@ class Book extends BaseArticle
         return $this->variants;
     }
 
-    public function addVariant(BookVariant $variant): void
-    {
-        if (!$this->variants->contains($variant)) {
-            $this->variants->add($variant);
-            $variant->setBook($this);
-        }
-    }
 
-    public function removeVariant(BookVariant $variant): self
-    {
-        if ($this->variants->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-            if ($variant->getBook() === $this) {
-                $variant->setBook(null);
-            }
-        }
-
-        return $this;
-    }
 }

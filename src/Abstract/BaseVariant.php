@@ -17,6 +17,9 @@ abstract class BaseVariant
     #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
     protected float $unitPrice;
 
+    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
+    protected BaseArticle $parent;
+
     public function getStock(): int
     {
         return $this->stock;
@@ -35,5 +38,15 @@ abstract class BaseVariant
     public function setUnitPrice(float $unitPrice): void
     {
         $this->unitPrice = $unitPrice;
+    }
+
+    public function getParent(): BaseArticle
+    {
+        return $this->parent;
+    }
+
+    public function setParent(BaseArticle $book): void
+    {
+        $this->parent = $book;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Abstract\BaseArticle;
 use App\Abstract\BaseVariant;
 use App\Repository\BookVariantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookVariantRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant']],
+    normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant', 'read:article']],
     denormalizationContext: ['groups' => ['write:bookVariant', 'write:baseVariant']],
 )]
 class BookVariant extends BaseVariant
@@ -20,35 +21,24 @@ class BookVariant extends BaseVariant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:books', 'write:books', 'read:bookVariant', 'write:bookVariant'])]
+    #[Groups(['read:article', 'write:books', 'read:bookVariant', 'write:bookVariant'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'variants')]
-    #[ORM\JoinColumn(nullable: false, name: 'book_id')]
-    #[Groups(['read:bookVariant', 'write:bookVariant'])]
-    private Book $book;
-
     #[ORM\Column(name: 'isbn_number', nullable: false)]
-    #[Groups(['read:books', 'write:books','read:bookVariant', 'write:bookVariant'])]
+    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private string $isbnNumber;
 
     #[ORM\ManyToOne(targetEntity: BookFormat::class, inversedBy: 'books')]
-    #[Groups(['read:books', 'write:books','read:bookVariant', 'write:bookVariant'])]
+    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private BookFormat $format;
+
+    #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
+    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:baseVariant', 'read:article'])]
+    protected BaseArticle $parent;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getBook(): ?Book
-    {
-        return $this->book;
-    }
-
-    public function setBook(?Book $book): void
-    {
-        $this->book = $book;
     }
 
     public function getIsbnNumber(): int
@@ -72,5 +62,4 @@ class BookVariant extends BaseVariant
     {
         $this->format = $format;
     }
-
 }
