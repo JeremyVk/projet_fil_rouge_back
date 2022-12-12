@@ -14,7 +14,7 @@ class BookFormatFixture extends Fixture
 {
     public const bookFormats = [
         "Broché",
-        "Poche'",
+        "Poche",
         'Standard',
         'Grand Format',
         'Numérique'
