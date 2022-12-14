@@ -18,8 +18,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:books', 'read:article']],
+    normalizationContext: ['groups' => ['read:article', 'read:article', 'read:bookVariant', 'read:baseVariant']],
     denormalizationContext: ['groups' => ['write:books']],
+    order: ['variants.unitPrice' => 'ASC']
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
 #[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
@@ -28,20 +29,19 @@ class Book extends BaseArticle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:books'])]
+    #[Groups(['read:article', 'read:baseVariant'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, name: 'editor')]
-    #[Groups(['read:books', 'write:books'])]
+    #[Groups(['read:article', 'write:books', 'read:baseVariant'])]
     private ?string $editor = null;
 
-    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
-    #[Groups(['read:books', 'write:books'])]
-    private ?Collection $bookVariants;
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
+    protected Collection $variants;
 
     public function __construct()
     {
-        $this->bookVariants = new ArrayCollection();
+        $this->variants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,30 +62,12 @@ class Book extends BaseArticle
     }
 
     /**
-     * @return ?Collection<int, BookVariant>
+     * @return ?Collection<int, variant>
      */
-    public function getBookVariants(): ?Collection
+    public function getVariants(): ?Collection
     {
-        return $this->bookVariants;
+        return $this->variants;
     }
 
-    public function addBookVariant(BookVariant $bookVariant): void
-    {
-        if (!$this->bookVariants->contains($bookVariant)) {
-            $this->bookVariants->add($bookVariant);
-            $bookVariant->setBook($this);
-        }
-    }
 
-    public function removeBookVariant(BookVariant $bookVariant): self
-    {
-        if ($this->bookVariants->removeElement($bookVariant)) {
-            // set the owning side to null (unless already changed)
-            if ($bookVariant->getBook() === $this) {
-                $bookVariant->setBook(null);
-            }
-        }
-
-        return $this;
-    }
 }

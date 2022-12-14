@@ -5,21 +5,25 @@ declare(strict_types=1);
 namespace App\Abstract;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 abstract class BaseArticle
 {
     #[ORM\Column(name: 'title', length: 255)]
-    #[Groups(['read:article', 'write:article'])]
+    #[Groups(['read:article', 'write:article', ])]
     protected string $title;
 
     #[ORM\Column(name: 'resume', length: 500)]
-    #[Groups(['read:article', 'write:article'])]
+    #[Groups(['read:article', 'write:article',])]
     protected string $resume;
 
     #[ORM\Column(name: 'image', length: 255)]
-    #[Groups(['read:article', 'write:article'])]
+    #[Groups(['read:article', 'write:article', ])]
     protected string $image;
+
+    #[Groups(['read:article', 'write:article'])]
+    protected Collection $variants;
 
     /**
      * Get the value of title
@@ -90,6 +94,22 @@ abstract class BaseArticle
     {
         $this->image = $image;
 
+        return $this;
+    }
+
+    public function addVariant(BaseVariant $variant): void
+    {
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setParent($this);
+        }
+    }
+
+    public function removeVariant(BaseVariant $variant): self
+    {
+        if ($this->variants->removeElement($variant)) {
+            // set the owning side to null (unless already changed)
+        }
         return $this;
     }
 }
