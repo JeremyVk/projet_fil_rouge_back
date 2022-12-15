@@ -31,7 +31,6 @@ final class ApiNormalizer implements NormalizerInterface, DenormalizerInterface,
 
         if (is_array($data)) {
             $data['date'] = date(\DateTime::RFC3339);
-            $data['type'] = $context['operation']->getShortName();
         }
 
         return $data;
