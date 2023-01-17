@@ -28,6 +28,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN cd /var/www && \
     composer install
 
+RUN cd /var/www && \
+    php bin/console lexik:jwt:generate-keypair
+
 WORKDIR /var/www/
 
 # ENTRYPOINT ["./docker/docker.sh"]
