@@ -8,31 +8,42 @@ use App\Entity\Abstract\BaseArticle;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:order']],
+    denormalizationContext: ['groups' => ['write:order']],
+)]
 #[ORM\Table(name: '`order`')]
-#[ApiResource]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:order', 'write:order'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['read:order', 'write:order'])]
     private ?int $number = null;
 
     #[ORM\Column]
+    #[Groups(['read:order', 'write:order'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:order', 'write:order'])]
     private ?User $user = null;
 
     #[ORM\Column]
+    #[Groups(['read:order', 'write:order'])]
     private ?float $amount = null;
 
     #[ORM\ManyToMany(targetEntity: BookVariant::class, inversedBy: 'orders')]
+    #[Groups(['read:order', 'write:order'])]
     private Collection $books;
 
     public function __construct()
@@ -101,7 +112,7 @@ class Order
         return $this->books;
     }
 
-    public function addABook(BookVariant $book): self
+    public function addBook(BookVariant $book): self
     {
         if (!$this->books->contains($book)) {
             $this->books->add($book);
