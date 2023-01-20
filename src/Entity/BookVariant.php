@@ -3,11 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Abstract\BaseArticle;
-use App\Abstract\BaseVariant;
+use App\Entity\Abstract\BaseArticle;
+use App\Entity\Abstract\BaseVariant;
 use App\Repository\BookVariantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 

@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Abstract;
+namespace App\Entity\Abstract;
 
+use App\Entity\Abstract\BaseVariant;;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[MappedSuperclass()]
 abstract class BaseArticle
 {
     #[ORM\Column(name: 'title', length: 255)]

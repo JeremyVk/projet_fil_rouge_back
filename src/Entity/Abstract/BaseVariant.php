@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Abstract;
+namespace App\Entity\Abstract;
 
+use App\Entity\Abstract\BaseArticle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ORM\MappedSuperclass()]
 abstract class BaseVariant
 {
     #[ORM\Column(name: 'stock')]
