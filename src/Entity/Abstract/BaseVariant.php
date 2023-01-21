@@ -11,16 +11,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\MappedSuperclass()]
 abstract class BaseVariant
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    #[Groups(['read:article', 'write:books', 'read:bookVariant', 'write:bookVariant'])]
+    private ?int $id = null;
+
     #[ORM\Column(name: 'stock')]
     #[Groups(['read:bookVariant', 'write:baseVariant', "read:article"])]
-    protected int $stock;
+    private int $stock;
 
     #[ORM\Column(name: 'unit_price')]
     #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
-    protected float $unitPrice;
+    private float $unitPrice;
 
     #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
-    protected BaseArticle $parent;
+    private BaseArticle $parent;
 
     public function getStock(): int
     {
@@ -50,5 +56,10 @@ abstract class BaseVariant
     public function setParent(BaseArticle $book): void
     {
         $this->parent = $book;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 }

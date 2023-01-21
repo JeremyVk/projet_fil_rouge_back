@@ -26,12 +26,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
 class Book extends BaseArticle
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['read:article', 'read:baseVariant'])]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255, name: 'editor')]
     #[Groups(['read:article', 'write:books', 'read:baseVariant'])]
     private ?string $editor = null;
@@ -42,11 +36,6 @@ class Book extends BaseArticle
     public function __construct()
     {
         $this->variants = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEditor(): ?string

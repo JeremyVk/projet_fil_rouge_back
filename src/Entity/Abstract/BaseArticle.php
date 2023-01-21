@@ -13,20 +13,31 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[MappedSuperclass()]
 abstract class BaseArticle
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[Groups(['read:article', 'write:article',])]
+    private int $id;
+
     #[ORM\Column(name: 'title', length: 255)]
     #[Groups(['read:article', 'write:article', ])]
-    protected string $title;
+    private string $title;
 
     #[ORM\Column(name: 'resume', length: 500)]
     #[Groups(['read:article', 'write:article',])]
-    protected string $resume;
+    private string $resume;
 
     #[ORM\Column(name: 'image', length: 255)]
     #[Groups(['read:article', 'write:article', ])]
-    protected string $image;
+    private string $image;
 
     #[Groups(['read:article', 'write:article'])]
-    protected Collection $variants;
+    private Collection $variants;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Get the value of title

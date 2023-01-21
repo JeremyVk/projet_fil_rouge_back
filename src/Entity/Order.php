@@ -2,10 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
+use App\Entity\BookVariant;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
 use App\Entity\Abstract\BaseArticle;
 use ApiPlatform\Metadata\ApiResource;
+use App\Controller\CreateOrderController;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -14,7 +19,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:order']],
-    denormalizationContext: ['groups' => ['write:order']],
+    // denormalizationContext: ['groups' => ['write:order']],
+    operations: [
+        new Get(),
+        new Post(
+            name: 'publication', 
+            uriTemplate: '/orders', 
+            controller: CreateOrderController::class
+        )
+    ]
 )]
 #[ORM\Table(name: '`order`')]
 class Order
@@ -33,7 +46,7 @@ class Order
     #[Groups(['read:order', 'write:order'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:order', 'write:order'])]
     private ?User $user = null;
@@ -46,9 +59,13 @@ class Order
     #[Groups(['read:order', 'write:order'])]
     private Collection $books;
 
+    #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderItem::class)]
+    private Collection $orderItems;
+
     public function __construct()
     {
         $this->books = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,6 +141,36 @@ class Order
     public function removeBook(BookVariant $book): self
     {
         $this->books->removeElement($book);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems->add($orderItem);
+            $orderItem->setOrdered($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getOrdered() === $this) {
+                $orderItem->setOrdered(null);
+            }
+        }
 
         return $this;
     }

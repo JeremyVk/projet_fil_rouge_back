@@ -16,12 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class BookVariant extends BaseVariant
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['read:article', 'write:books', 'read:bookVariant', 'write:bookVariant'])]
-    private ?int $id = null;
-
     #[ORM\Column(name: 'isbn_number', nullable: false)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private string $isbnNumber;
@@ -33,11 +27,6 @@ class BookVariant extends BaseVariant
     #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:baseVariant', 'read:article'])]
     protected BaseArticle $parent;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getIsbnNumber(): int
     {
