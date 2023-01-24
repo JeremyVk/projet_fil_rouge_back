@@ -25,8 +25,7 @@ class BookVariant extends BaseVariant
     private BookFormat $format;
 
     #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
-    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:baseVariant', 'read:article'])]
-    protected BaseArticle $parent;
+    private BaseArticle $parent;
 
     public function getIsbnNumber(): int
     {
@@ -48,5 +47,15 @@ class BookVariant extends BaseVariant
     public function setFormat(BookFormat $format)
     {
         $this->format = $format;
+    }
+
+    public function getParent(): BaseArticle
+    {
+        return $this->parent;
+    }
+
+    public function setParent(BaseArticle $parent): void
+    {
+        $this->parent = $parent;
     }
 }

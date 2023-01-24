@@ -11,6 +11,7 @@ use App\Repository\OrderRepository;
 use App\Entity\Abstract\BaseArticle;
 use ApiPlatform\Metadata\ApiResource;
 use App\Controller\CreateOrderController;
+use App\Serializer\OrderDenormalizer;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,15 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:order']],
-    // denormalizationContext: ['groups' => ['write:order']],
-    operations: [
-        new Get(),
-        new Post(
-            name: 'publication', 
-            uriTemplate: '/orders', 
-            controller: CreateOrderController::class
-        )
-    ]
+    denormalizationContext: ['groups' => ['write:order']],
 )]
 #[ORM\Table(name: '`order`')]
 class Order
