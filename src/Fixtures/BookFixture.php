@@ -166,10 +166,7 @@ class BookFixture extends Fixture
                     $book->addVariant($newVariant);
                 }
             }
-            
-
             $manager->persist($book);
-
         }
         $manager->flush();
     }

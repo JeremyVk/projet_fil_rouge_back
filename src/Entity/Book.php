@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use App\Entity\Abstract\BaseArticle;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\BookVariant;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\Abstract\BaseArticle;
+use App\Entity\Abstract\BaseVariant;
 use App\Filters\AllBookSearchFilter;
+use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -58,5 +60,20 @@ class Book extends BaseArticle
         return $this->variants;
     }
 
+    public function addVariant(BaseVariant $variant): void
+    {
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setParent($this);
+        }
+    }
+
+    public function removeVariant(BaseVariant $variant): self
+    {
+        if ($this->variants->removeElement($variant)) {
+            // set the owning side to null (unless already changed)
+        }
+        return $this;
+    }
 
 }

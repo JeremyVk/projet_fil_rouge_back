@@ -110,20 +110,4 @@ abstract class BaseArticle
 
         return $this;
     }
-
-    public function addVariant(BaseVariant $variant): void
-    {
-        if (!$this->variants->contains($variant)) {
-            $this->variants->add($variant);
-            $variant->setParent($this);
-        }
-    }
-
-    public function removeVariant(BaseVariant $variant): self
-    {
-        if ($this->variants->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-        }
-        return $this;
-    }
 }
