@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Abstract\BaseVariant;
+use App\Entity\Abstract\BaseVariant\BaseVariant;
 use App\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 

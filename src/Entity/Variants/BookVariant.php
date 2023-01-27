@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Variants;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Abstract\BaseArticle;
-use App\Entity\Abstract\BaseVariant;
+use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
+use App\Entity\Abstract\BaseVariant\BaseVariant;
 use App\Repository\BookVariantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\BookFormat;
+use App\Entity\Articles\Book\Book;
 
 #[ORM\Entity(repositoryClass: BookVariantRepository::class)]
 #[ApiResource(
@@ -25,7 +27,7 @@ class BookVariant extends BaseVariant
     private BookFormat $format;
 
     #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
-    private BaseArticle $parent;
+    private BaseArticleInterface $parent;
 
     public function getIsbnNumber(): int
     {
@@ -49,12 +51,12 @@ class BookVariant extends BaseVariant
         $this->format = $format;
     }
 
-    public function getParent(): BaseArticle
+    public function getParent(): BaseArticleInterface
     {
         return $this->parent;
     }
 
-    public function setParent(BaseArticle $parent): void
+    public function setParent(BaseArticleInterface $parent): void
     {
         $this->parent = $parent;
     }

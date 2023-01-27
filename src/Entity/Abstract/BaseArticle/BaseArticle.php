@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Abstract;
+namespace App\Entity\Abstract\BaseArticle;
 
-use App\Entity\Abstract\BaseVariant;;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
 
 #[MappedSuperclass()]
-abstract class BaseArticle
+abstract class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,10 +30,7 @@ abstract class BaseArticle
     #[Groups(['read:article', 'write:article', ])]
     private string $image;
 
-    #[Groups(['read:article', 'write:article'])]
-    private Collection $variants;
-
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -56,11 +52,9 @@ abstract class BaseArticle
      *
      * @return self
      */
-    public function setTitle(string $title): self
+    public function setTitle(string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -80,11 +74,9 @@ abstract class BaseArticle
      *
      * @return self
      */
-    public function setResume(string $resume): self
+    public function setResume(string $resume): void
     {
         $this->resume = $resume;
-
-        return $this;
     }
 
     /**
@@ -104,10 +96,8 @@ abstract class BaseArticle
      *
      * @return self
      */
-    public function setImage(string $image): self
+    public function setImage(string $image): void
     {
         $this->image = $image;
-
-        return $this;
     }
 }

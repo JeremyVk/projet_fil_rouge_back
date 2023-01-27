@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\User;
-use App\Entity\BookVariant;
+use App\Entity\Variants\BookVariant;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
-use App\Entity\Abstract\BaseArticle;
+use App\Entity\Abstract\BaseArticle\BaseArticle;
 use ApiPlatform\Metadata\ApiResource;
 use App\Controller\CreateOrderController;
 use App\Serializer\OrderDenormalizer;

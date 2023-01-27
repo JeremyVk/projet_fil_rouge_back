@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Abstract;
+namespace App\Entity\Abstract\BaseVariant;
 
-use App\Entity\Abstract\BaseArticle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
+use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
 
 #[ORM\MappedSuperclass()]
-abstract class BaseVariant
+abstract class BaseVariant implements BaseVariantInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +27,12 @@ abstract class BaseVariant
     private float $unitPrice;
 
     #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
-    private BaseArticle $parent;
+    private BaseArticleInterface $parent;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     public function getStock(): int
     {
@@ -48,18 +54,13 @@ abstract class BaseVariant
         $this->unitPrice = $unitPrice;
     }
 
-    public function getParent(): BaseArticle
+    public function getParent(): BaseArticleInterface
     {
         return $this->parent;
     }
 
-    public function setParent(BaseArticle $book): void
+    public function setParent(BaseArticleInterface $book): void
     {
         $this->parent = $book;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 }

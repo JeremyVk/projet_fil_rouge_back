@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Articles\Book;
 
-use App\Entity\BookVariant;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use ApiPlatform\Metadata\ApiFilter;
-use App\Entity\Abstract\BaseArticle;
-use App\Entity\Abstract\BaseVariant;
+use App\Entity\Abstract\BaseArticle\BaseArticle;
 use App\Filters\AllBookSearchFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
+use App\Entity\Variants\BookVariant;
 
 
 // #[ApiFilter(AllBookSearchFilter::class, properties: ["title" => "partial", "resume" => "partial", "editor"])]
@@ -60,7 +60,7 @@ class Book extends BaseArticle
         return $this->variants;
     }
 
-    public function addVariant(BaseVariant $variant): void
+    public function addVariant(BaseVariantInterface $variant): void
     {
         if (!$this->variants->contains($variant)) {
             $this->variants->add($variant);
@@ -68,12 +68,11 @@ class Book extends BaseArticle
         }
     }
 
-    public function removeVariant(BaseVariant $variant): self
+    public function removeVariant(BaseVariantInterface $variant): void
     {
         if ($this->variants->removeElement($variant)) {
             // set the owning side to null (unless already changed)
         }
-        return $this;
     }
 
 }
