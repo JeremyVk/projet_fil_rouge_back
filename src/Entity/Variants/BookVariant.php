@@ -23,7 +23,7 @@ class BookVariant extends BaseVariant
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private string $isbnNumber;
 
-    #[ORM\ManyToOne(targetEntity: BookFormat::class, inversedBy: 'books')]
+    #[ORM\ManyToOne(targetEntity: BookFormat::class)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private FormatInterface $format;
 

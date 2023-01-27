@@ -33,6 +33,7 @@ class Book extends BaseArticle
     private ?string $editor = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['read:article', 'write:article'])]
     protected Collection $variants;
 
     public function __construct()
