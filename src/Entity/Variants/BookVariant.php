@@ -8,8 +8,9 @@ use App\Entity\Abstract\BaseVariant\BaseVariant;
 use App\Repository\BookVariantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Entity\BookFormat;
 use App\Entity\Articles\Book\Book;
+use App\Entity\Formats\Interfaces\FormatInterface;
+use App\Entity\Formats\BookFormat;
 
 #[ORM\Entity(repositoryClass: BookVariantRepository::class)]
 #[ApiResource(
@@ -24,7 +25,7 @@ class BookVariant extends BaseVariant
 
     #[ORM\ManyToOne(targetEntity: BookFormat::class, inversedBy: 'books')]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
-    private BookFormat $format;
+    private FormatInterface $format;
 
     #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
     private BaseArticleInterface $parent;
@@ -41,12 +42,12 @@ class BookVariant extends BaseVariant
         return $this;
     }
 
-    public function getformat(): BookFormat
+    public function getformat(): FormatInterface
     {
         return $this->format;
     }
 
-    public function setFormat(BookFormat $format)
+    public function setFormat(FormatInterface $format)
     {
         $this->format = $format;
     }

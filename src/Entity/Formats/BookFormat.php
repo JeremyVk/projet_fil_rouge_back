@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Formats;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Formats\Interfaces\FormatInterface;
 use App\Repository\BookFormatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use App\Entity\Variants\BookVariant;
     normalizationContext: ['groups' => ['read:bookFormats', 'read:books']],
     denormalizationContext: ['groups' => ['write:bookVariant', 'write:bookFormats']],
 )]
-class BookFormat
+class BookFormat implements FormatInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,53 +28,18 @@ class BookFormat
     #[Groups(['read:bookFormats', 'read:bookVariant', 'read:books'])]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: BookVariant::class, mappedBy: 'format')]
-    // #[Groups([])]
-    private Collection $books;
-
-    public function __construct()
-    {
-        $this->books = new ArrayCollection();
-    }
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BookVariant>
-     */
-    public function getBooks(): Collection
-    {
-        return $this->books;
-    }
-
-    public function addBook(BookVariant $book): self
-    {
-        if (!$this->books->contains($book)) {
-            $this->books->add($book);
-        }
-
-        return $this;
-    }
-
-    public function removeBook(BookVariant $book): self
-    {
-        $this->books->removeElement($book);
-
-        return $this;
     }
 }

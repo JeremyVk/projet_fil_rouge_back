@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Fixtures;
 
-use App\Entity\BookFormat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Formats\BookFormat;
 
 class BookFormatFixture extends Fixture
 {
