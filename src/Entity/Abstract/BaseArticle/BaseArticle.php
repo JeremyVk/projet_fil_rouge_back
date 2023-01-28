@@ -5,11 +5,28 @@ declare(strict_types=1);
 namespace App\Entity\Abstract\BaseArticle;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\MappedSuperclass;
+use App\Entity\Articles\Book\Book;
+use ApiPlatform\Metadata\ApiResource;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use App\Entity\Abstract\BaseVariant\BaseVariant;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
+use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 
-#[MappedSuperclass()]
+#[ORM\Entity()]
+#[ORM\Table('shop_product')]
+#[InheritanceType('JOINED')]
+#[DiscriminatorColumn(name: 'type', type: 'string')]
+#[DiscriminatorMap(['Book' => Book::class])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:article', 'read:article', 'read:bookVariant', 'read:baseVariant']],
+    denormalizationContext: ['groups' => ['write:books']],
+    order: ['variants.unitPrice' => 'ASC']
+)]
 abstract class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]
@@ -29,6 +46,15 @@ abstract class BaseArticle implements BaseArticleInterface
     #[ORM\Column(name: 'image', length: 255)]
     #[Groups(['read:article', 'write:article', ])]
     private string $image;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BaseVariant::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups(['read:article', 'write:article'])]
+    private Collection $variants;
+
+    public function __construct()
+    {
+        $this->variants = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -99,5 +125,28 @@ abstract class BaseArticle implements BaseArticleInterface
     public function setImage(string $image): void
     {
         $this->image = $image;
+    }
+
+        /**
+     * @return ?Collection<int, variant>
+     */
+    public function getVariants(): ?Collection
+    {
+        return $this->variants;
+    }
+
+    public function addVariant(BaseVariantInterface $variant): void
+    {
+        if (!$this->variants->contains($variant)) {
+            $this->variants->add($variant);
+            $variant->setParent($this);
+        }
+    }
+
+    public function removeVariant(BaseVariantInterface $variant): void
+    {
+        if ($this->variants->removeElement($variant)) {
+            // set the owning side to null (unless already changed)
+        }
     }
 }

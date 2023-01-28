@@ -20,7 +20,7 @@ use App\Entity\Variants\BookVariant;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:article', 'read:article', 'read:bookVariant', 'read:baseVariant']],
+    normalizationContext: ['groups' => ['read:article', 'read:bookVariant', 'read:baseVariant']],
     denormalizationContext: ['groups' => ['write:books']],
     order: ['variants.unitPrice' => 'ASC']
 )]
@@ -31,15 +31,6 @@ class Book extends BaseArticle
     #[ORM\Column(length: 255, name: 'editor')]
     #[Groups(['read:article', 'write:books', 'read:baseVariant'])]
     private ?string $editor = null;
-
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
-    #[Groups(['read:article', 'write:article'])]
-    protected Collection $variants;
-
-    public function __construct()
-    {
-        $this->variants = new ArrayCollection();
-    }
 
     public function getEditor(): ?string
     {
@@ -52,28 +43,4 @@ class Book extends BaseArticle
 
         return $this;
     }
-
-    /**
-     * @return ?Collection<int, variant>
-     */
-    public function getVariants(): ?Collection
-    {
-        return $this->variants;
-    }
-
-    public function addVariant(BaseVariantInterface $variant): void
-    {
-        if (!$this->variants->contains($variant)) {
-            $this->variants->add($variant);
-            $variant->setParent($this);
-        }
-    }
-
-    public function removeVariant(BaseVariantInterface $variant): void
-    {
-        if ($this->variants->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-        }
-    }
-
 }
