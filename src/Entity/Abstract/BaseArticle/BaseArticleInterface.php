@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Abstract\BaseArticle;
 
+use Doctrine\Common\Collections\Collection;
 use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 
 interface BaseArticleInterface
@@ -21,5 +22,5 @@ interface BaseArticleInterface
 
     public function addVariant(BaseVariantInterface $variant): void;
     public function removeVariant(BaseVariantInterface $variant): void;
-
+    public function getVariants(): ?Collection;
 }
