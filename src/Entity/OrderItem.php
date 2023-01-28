@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Abstract\BaseVariant\BaseVariant;
-use App\Repository\OrderItemRepository;
+use App\Entity\Order;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\OrderItemRepository;
+use App\Entity\Abstract\BaseVariant\BaseVariant;
+use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
+use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
 
 #[ORM\Entity(repositoryClass: OrderItemRepository::class)]
 #[ApiResource]
-class OrderItem
+class OrderItem implements BaseOrderItemInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +30,9 @@ class OrderItem
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\Column(type: 'integer')]
+    private ?int $price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -37,23 +43,19 @@ class OrderItem
         return $this->ordered;
     }
 
-    public function setOrdered(?Order $ordered): self
+    public function setOrdered(?Order $ordered): void
     {
         $this->ordered = $ordered;
-
-        return $this;
     }
 
-    public function getVariant(): ?BaseVariant
+    public function getVariant(): ?BaseVariantInterface
     {
         return $this->variant;
     }
 
-    public function setVariant(?BaseVariant $variant): self
+    public function setVariant(BaseVariantInterface $variant): void
     {
         $this->variant = $variant;
-
-        return $this;
     }
 
     public function getQuantity(): ?int
@@ -61,10 +63,18 @@ class OrderItem
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
+    }
 
-        return $this;
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setprice(?int $price): void
+    {
+        $this->price = $price;
     }
 }
