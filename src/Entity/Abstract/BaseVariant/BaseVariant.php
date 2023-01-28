@@ -42,7 +42,7 @@ abstract class BaseVariant implements BaseVariantInterface
     private float $unitPrice;
 
     #[ORM\ManyToOne(targetEntity:BaseArticle::class, inversedBy:'variants')]
-    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
+    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", "write:article"])]
     private BaseArticleInterface $parent;
 
     public function getId(): int
@@ -75,8 +75,8 @@ abstract class BaseVariant implements BaseVariantInterface
         return $this->parent;
     }
 
-    public function setParent(BaseArticleInterface $book): void
+    public function setParent(BaseArticleInterface $parent): void
     {
-        $this->parent = $book;
+        $this->parent = $parent;
     }
 }

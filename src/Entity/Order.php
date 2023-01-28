@@ -3,19 +3,13 @@
 namespace App\Entity;
 
 use App\Entity\User;
-use App\Entity\Variants\BookVariant;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
-use App\Entity\Abstract\BaseArticle\BaseArticle;
 use ApiPlatform\Metadata\ApiResource;
-use App\Controller\CreateOrderController;
-use App\Serializer\OrderDenormalizer;
+use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ApiResource(
@@ -48,16 +42,11 @@ class Order
     #[Groups(['read:order', 'write:order'])]
     private ?float $amount = null;
 
-    #[ORM\ManyToMany(targetEntity: BookVariant::class, inversedBy: 'orders')]
-    #[Groups(['read:order', 'write:order'])]
-    private Collection $books;
-
     #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderItem::class)]
     private Collection $orderItems;
 
     public function __construct()
     {
-        $this->books = new ArrayCollection();
         $this->orderItems = new ArrayCollection();
     }
 
@@ -115,30 +104,6 @@ class Order
     }
 
     /**
-     * @return Collection<int, BaseArticle>
-     */
-    public function getBooks(): Collection
-    {
-        return $this->books;
-    }
-
-    public function addBook(BookVariant $book): self
-    {
-        if (!$this->books->contains($book)) {
-            $this->books->add($book);
-        }
-
-        return $this;
-    }
-
-    public function removeBook(BookVariant $book): self
-    {
-        $this->books->removeElement($book);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, OrderItem>
      */
     public function getOrderItems(): Collection
@@ -146,7 +111,7 @@ class Order
         return $this->orderItems;
     }
 
-    public function addOrderItem(OrderItem $orderItem): self
+    public function addOrderItem(BaseOrderItemInterface $orderItem): self
     {
         if (!$this->orderItems->contains($orderItem)) {
             $this->orderItems->add($orderItem);
@@ -156,7 +121,7 @@ class Order
         return $this;
     }
 
-    public function removeOrderItem(OrderItem $orderItem): self
+    public function removeOrderItem(BaseOrderItemInterface $orderItem): self
     {
         if ($this->orderItems->removeElement($orderItem)) {
             // set the owning side to null (unless already changed)

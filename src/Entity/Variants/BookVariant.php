@@ -27,9 +27,6 @@ class BookVariant extends BaseVariant
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private FormatInterface $format;
 
-    #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
-    private BaseArticleInterface $parent;
-
     public function getIsbnNumber(): int
     {
         return $this->isbnNumber;
@@ -50,15 +47,5 @@ class BookVariant extends BaseVariant
     public function setFormat(FormatInterface $format)
     {
         $this->format = $format;
-    }
-
-    public function getParent(): BaseArticleInterface
-    {
-        return $this->parent;
-    }
-
-    public function setParent(BaseArticleInterface $parent): void
-    {
-        $this->parent = $parent;
     }
 }
