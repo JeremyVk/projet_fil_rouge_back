@@ -41,12 +41,11 @@ class OrderRepository extends ServiceEntityRepository
 
     public function findLastOrderNumber()
     {
-        $this->createQueryBuilder('o')
-            ->select('o.number')
+       return $this->createQueryBuilder('o')
             ->orderBy('o.createdAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
             ;
     }
 

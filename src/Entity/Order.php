@@ -42,7 +42,7 @@ class Order
     #[Groups(['read:order', 'write:order'])]
     private ?float $amount = null;
 
-    #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderItem::class)]
+    #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderItem::class, cascade: ['persist'])]
     private Collection $orderItems;
 
     public function __construct()
