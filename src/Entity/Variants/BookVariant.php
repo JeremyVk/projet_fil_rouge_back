@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Variants;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Abstract\BaseArticle;
-use App\Abstract\BaseVariant;
+use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
+use App\Entity\Abstract\BaseVariant\BaseVariant;
 use App\Repository\BookVariantRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Articles\Book\Book;
+use App\Entity\Formats\Interfaces\FormatInterface;
+use App\Entity\Formats\BookFormat;
 
 #[ORM\Entity(repositoryClass: BookVariantRepository::class)]
 #[ApiResource(
@@ -18,28 +19,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class BookVariant extends BaseVariant
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['read:article', 'write:books', 'read:bookVariant', 'write:bookVariant'])]
-    private ?int $id = null;
-
     #[ORM\Column(name: 'isbn_number', nullable: false)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
     private string $isbnNumber;
 
-    #[ORM\ManyToOne(targetEntity: BookFormat::class, inversedBy: 'books')]
+    #[ORM\ManyToOne(targetEntity: BookFormat::class)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
-    private BookFormat $format;
+    private FormatInterface $format;
 
     #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
-    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:baseVariant', 'read:article'])]
-    protected BaseArticle $parent;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    private BaseArticleInterface $parent;
 
     public function getIsbnNumber(): int
     {
@@ -53,13 +42,23 @@ class BookVariant extends BaseVariant
         return $this;
     }
 
-    public function getformat(): BookFormat
+    public function getformat(): FormatInterface
     {
         return $this->format;
     }
 
-    public function setFormat(BookFormat $format)
+    public function setFormat(FormatInterface $format)
     {
         $this->format = $format;
+    }
+
+    public function getParent(): BaseArticleInterface
+    {
+        return $this->parent;
+    }
+
+    public function setParent(BaseArticleInterface $parent): void
+    {
+        $this->parent = $parent;
     }
 }

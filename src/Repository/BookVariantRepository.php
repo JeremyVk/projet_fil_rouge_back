@@ -2,9 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\BookVariant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Variants\BookVariant;
 
 /**
  * @extends ServiceEntityRepository<BookVariant>

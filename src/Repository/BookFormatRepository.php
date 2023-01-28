@@ -2,9 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\BookFormat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Formats\BookFormat;
 
 /**
  * @extends ServiceEntityRepository<BookFormat>
