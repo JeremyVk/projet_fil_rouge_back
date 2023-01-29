@@ -76,9 +76,6 @@ class OrderService
         $order->setAmount($this->calculateOrderTotalAmount($order));
 
         return $order;
-        // $this->entityManager->persist($order);
-        // $this->entityManager->flush();
-
     }
 
     public function getOrderItem(array $item): BaseOrderItemInterface | JsonResponse
