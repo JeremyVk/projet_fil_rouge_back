@@ -3,9 +3,8 @@
 
 namespace App\Serializer;
 
-use App\Services\OrderService;
+use App\Services\Order\OrderService;
 use ApiPlatform\Api\IriConverterInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -26,9 +25,7 @@ class OrderCreateDenormalizer implements DenormalizerInterface, DenormalizerAwar
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $this->orderService->createOrder($data);
-
-        return new JsonResponse('The product does not exist');
+        return $this->orderService->createOrder($data);
     }
 
     /**
