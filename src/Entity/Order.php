@@ -48,6 +48,9 @@ class Order
     #[ORM\Column(type: 'integer', name: 'shipping_amount')]
     private ?int $shippingAmount = null;
 
+    #[ORM\Column(name: 'shipping_address_id', type: 'integer')]
+    private Address $shippingAddress;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -144,5 +147,15 @@ class Order
     public function setShippingAmount(?int $shippingAmount): void
     {
         $this->shippingAmount = $shippingAmount;
+    }
+
+    public function getShippingAddress(): Address
+    {
+        return $this->shippingAddress;
+    }
+
+    public function setShippingAddress(Address $shippingAddress): void
+    {
+        $this->shippingAddress = $shippingAddress;
     }
 }

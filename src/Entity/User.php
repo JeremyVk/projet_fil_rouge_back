@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -52,6 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'lastname', length: 255)]
     #[Groups(['read:users', 'write:users'])]
     private string $lastname;
+
+    #[ORM\OneToMany(mappedBy: 'user', cascade: ['persist', 'remove'], targetEntity: Address::class)]
+    private ?Collection $addresses = null;
 
     public function getId(): int
     {
@@ -141,5 +145,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): void
     {
         $this->lastname = $lastname;
+    }
+
+    public function getAddresses(): ?Address
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): void
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+        }
+    }
+
+    public function removeAddress(Address $address): void
+    {
+        if ($this->addresses->contains($address)) {
+            $this->addresses->removeElement($address);
+        }
     }
 }
