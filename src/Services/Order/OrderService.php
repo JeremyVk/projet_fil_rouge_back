@@ -19,6 +19,7 @@ class OrderService
     public const ORDER_DATA_NEEDED = [
         'orderItems',
         'user',
+        'shippingAmout',
     ];
 
     public function __construct(
@@ -72,6 +73,7 @@ class OrderService
 
         $this->entityManager->flush();
         
+        $order->setShippingAmount($orderData['shippingAmount']);
         $order->setCreatedAt(new DateTimeImmutable());
         $order->setAmount($this->calculateOrderTotalAmount($order));
 
@@ -95,6 +97,7 @@ class OrderService
         foreach($order->getOrderItems() as $item) {
             $orderTotalAmount += $item->getPrice() * $item->getQuantity();
         }
+        $orderTotalAmount += $order->getShippingAmount();
 
         return $orderTotalAmount;
     }

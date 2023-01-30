@@ -45,6 +45,9 @@ class Order
     #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderItem::class, cascade: ['persist'])]
     private Collection $orderItems;
 
+    #[ORM\Column(type: 'integer', name: 'shipping_amount')]
+    private ?int $shippingAmount = null;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -131,5 +134,15 @@ class Order
         }
 
         return $this;
+    }
+
+    public function getShippingAmount(): ?int
+    {
+        return $this->shippingAmount;
+    }
+
+    public function setShippingAmount(?int $shippingAmount): void
+    {
+        $this->shippingAmount = $shippingAmount;
     }
 }
