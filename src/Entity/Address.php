@@ -4,11 +4,23 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Link;
 use App\Repository\AddressRepository;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['read:address', 'read:user'],
+    denormalizationContext: ['write:address', 'write:user'])]
+#[ApiResource(
+   uriTemplate: '/users/{id}/addresses',
+   uriVariables: [
+    'id' => new Link(
+        fromClass: User::class,
+        fromProperty: 'addresses'
+    )
+   ]
+)]
 class Address
 {
     #[ORM\Id]

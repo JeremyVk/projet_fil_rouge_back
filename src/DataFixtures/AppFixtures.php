@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Address;
 use App\Entity\User;
 use App\Entity\Order;
 use App\Fixtures\BookFixture;
@@ -26,6 +27,15 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $user->setRoles(['ROLE_ADMIN']);
         $user->setFirstname('jeje');
         $user->setLastname('jeje');
+        
+        $address = new Address();
+        $address->setFirstname("Vk");
+        $address->setLastname("jérémy");
+        $address->setPostalCode("13480");
+        $address->setStreet("18 traverse de l'espargoulo");
+
+        $user->addAddress($address);
+        $manager->persist($address);
         $manager->persist($user);
 
         $manager->flush();
