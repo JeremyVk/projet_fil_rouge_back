@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Link;
 use App\Repository\AddressRepository;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ApiResource(
@@ -19,7 +19,8 @@ use Doctrine\Common\Collections\Collection;
         fromClass: User::class,
         fromProperty: 'addresses'
     )
-   ]
+    ],
+   operations: [ new GetCollection() ]
 )]
 class Address
 {

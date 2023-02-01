@@ -56,6 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $lastname;
 
     #[ORM\OneToMany(mappedBy: 'user', cascade: ['persist', 'remove'], targetEntity: Address::class)]
+    #[Groups(['read:users', 'write:users'])]
     private ?Collection $addresses = null;
 
     public function __construct()
@@ -153,7 +154,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastname = $lastname;
     }
 
-    public function getAddresses(): ?Address
+    public function getAddresses(): ?Collection
     {
         return $this->addresses;
     }

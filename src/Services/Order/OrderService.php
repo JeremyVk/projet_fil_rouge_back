@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use App\Services\Order\OrderItem\OrderItemFactory;
 use DateTimeImmutable;
 use Exception;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Security;
 
 class OrderService
@@ -36,7 +37,7 @@ class OrderService
     public function createOrder(array $orderData)
     {
         if (!$this-> isValidOrderData($orderData)) {
-            return new JsonResponse(['The order is missing data']);
+            throw new Exception('The order is missing data');
         }
 
         return $this->buildOrder($orderData);
@@ -48,9 +49,8 @@ class OrderService
             if (!isset($orderData[$fieldNeeded]) || empty($orderData[$fieldNeeded])) {
                 return false;
             }
-
-            return true;
         }
+        return true;
     }
 
     public function buildOrder($orderData): Order
@@ -59,7 +59,7 @@ class OrderService
         $user = $this->userRepository->find($orderData['user']['id']);
 
         if (!$user) {
-            throw new Exception("user not connected or user not found");
+            throw new UnauthorizedHttpException("user not connected or user not found");
         }
 
         $order->setUser($user);
