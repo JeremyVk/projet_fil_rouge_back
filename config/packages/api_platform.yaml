@@ -6,6 +6,11 @@ api_platform:
       mime_types: ['application/json']
     html:
       mime_types: ['text/html']
+  swagger:
+    api_keys:
+      JWT:
+        name: Authorization
+        type: header
 
   # Enable the Swagger documentation and export.
   enable_swagger: true

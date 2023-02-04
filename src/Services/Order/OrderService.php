@@ -8,10 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ProductVariantRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
+use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
 use App\Services\Order\OrderItem\OrderItemFactory;
 use DateTimeImmutable;
 use Exception;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Security;
 
 class OrderService
@@ -19,7 +21,8 @@ class OrderService
     public const ORDER_DATA_NEEDED = [
         'orderItems',
         'user',
-        'shippingAmout',
+        'shippingAmount',
+        'shippingAddress'
     ];
 
     public function __construct(
@@ -29,6 +32,7 @@ class OrderService
         private OrderItemFactory $orderItemFactory,
         private UserRepository $userRepository,
         private Security $security,
+        private AddressRepository $addressRepository,
     )
     {
     }
@@ -36,7 +40,7 @@ class OrderService
     public function createOrder(array $orderData)
     {
         if (!$this-> isValidOrderData($orderData)) {
-            return new JsonResponse(['The order is missing data']);
+            throw new Exception('The order is missing data');
         }
 
         return $this->buildOrder($orderData);
@@ -48,9 +52,8 @@ class OrderService
             if (!isset($orderData[$fieldNeeded]) || empty($orderData[$fieldNeeded])) {
                 return false;
             }
-
-            return true;
         }
+        return true;
     }
 
     public function buildOrder($orderData): Order
@@ -59,7 +62,7 @@ class OrderService
         $user = $this->userRepository->find($orderData['user']['id']);
 
         if (!$user) {
-            throw new Exception("user not connected or user not found");
+            throw new UnauthorizedHttpException("user not connected or user not found");
         }
 
         $order->setUser($user);
@@ -67,12 +70,19 @@ class OrderService
         $lastOrderRegistered = $this->orderRepository->findLastOrderNumber();
         $order->setNumber($lastOrderRegistered ? (int) $lastOrderRegistered->getNumber() + 1 : 1);
 
+        $shippingAddress = $this->addressRepository->find($orderData['shippingAddress']);
+
+        if(!$shippingAddress) {
+            throw new Exception("address not found");
+        }
+
         foreach ($orderData['orderItems'] as $item) {
             $order->addOrderItem($this->getOrderItem($item));
         }
 
         $this->entityManager->flush();
         
+        $order->setShippingAddress($shippingAddress);
         $order->setShippingAmount($orderData['shippingAmount']);
         $order->setCreatedAt(new DateTimeImmutable());
         $order->setAmount($this->calculateOrderTotalAmount($order));

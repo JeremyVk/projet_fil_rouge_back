@@ -31,6 +31,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
     access_control:
-        - { path: ^/api, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
+        # - { path: api/orders, roles: ROLE_USER }
+        - { path: /api, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
         - { path: ^/authentication_token, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
