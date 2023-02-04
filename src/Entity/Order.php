@@ -48,7 +48,7 @@ class Order
     #[ORM\Column(type: 'integer', name: 'shipping_amount')]
     private ?int $shippingAmount = null;
 
-    #[ORM\Column(name: 'shipping_address_id', type: 'integer')]
+    #[ORM\ManyToOne(targetEntity:Address::class)]
     private Address $shippingAddress;
 
     public function __construct()

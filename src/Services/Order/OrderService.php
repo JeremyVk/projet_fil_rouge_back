@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ProductVariantRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
+use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
 use App\Services\Order\OrderItem\OrderItemFactory;
 use DateTimeImmutable;
@@ -20,7 +21,8 @@ class OrderService
     public const ORDER_DATA_NEEDED = [
         'orderItems',
         'user',
-        'shippingAmout',
+        'shippingAmount',
+        'shippingAddress'
     ];
 
     public function __construct(
@@ -30,6 +32,7 @@ class OrderService
         private OrderItemFactory $orderItemFactory,
         private UserRepository $userRepository,
         private Security $security,
+        private AddressRepository $addressRepository,
     )
     {
     }
@@ -67,12 +70,19 @@ class OrderService
         $lastOrderRegistered = $this->orderRepository->findLastOrderNumber();
         $order->setNumber($lastOrderRegistered ? (int) $lastOrderRegistered->getNumber() + 1 : 1);
 
+        $shippingAddress = $this->addressRepository->find($orderData['shippingAddress']);
+
+        if(!$shippingAddress) {
+            throw new Exception("address not found");
+        }
+
         foreach ($orderData['orderItems'] as $item) {
             $order->addOrderItem($this->getOrderItem($item));
         }
 
         $this->entityManager->flush();
         
+        $order->setShippingAddress($shippingAddress);
         $order->setShippingAmount($orderData['shippingAmount']);
         $order->setCreatedAt(new DateTimeImmutable());
         $order->setAmount($this->calculateOrderTotalAmount($order));
