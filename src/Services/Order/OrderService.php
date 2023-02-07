@@ -2,19 +2,20 @@
 
 namespace App\Services\Order;
 
+use Exception;
 use App\Entity\Order;
+use DateTimeImmutable;
+use App\Repository\UserRepository;
 use App\Repository\OrderRepository;
+use App\Repository\AddressRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Exceptions\EcommerceErrorException;
 use App\Repository\ProductVariantRepository;
+use Symfony\Component\Security\Core\Security;
+use App\Services\Order\OrderItem\OrderItemFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
-use App\Repository\AddressRepository;
-use App\Repository\UserRepository;
-use App\Services\Order\OrderItem\OrderItemFactory;
-use DateTimeImmutable;
-use Exception;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Symfony\Component\Security\Core\Security;
 
 class OrderService
 {
@@ -43,7 +44,13 @@ class OrderService
             throw new Exception('The order is missing data');
         }
 
-        return $this->buildOrder($orderData);
+        try {
+            $order = $this->buildOrder($orderData);
+        } catch( EcommerceErrorException $e) {
+            return new JsonResponse($e->getMessage(), 500);
+        }
+
+        return $order;
     }
 
     public function isValidOrderData(array $orderData): bool
@@ -90,7 +97,7 @@ class OrderService
         return $order;
     }
 
-    public function getOrderItem(array $item): BaseOrderItemInterface | JsonResponse
+    public function getOrderItem(array $item): BaseOrderItemInterface
     {
         $productVariant = $this->productVariantRepository->find($item['id']);
         if (!$productVariant) {
