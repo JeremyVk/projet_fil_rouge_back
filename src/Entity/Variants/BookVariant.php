@@ -3,12 +3,10 @@
 namespace App\Entity\Variants;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
 use App\Entity\Abstract\BaseVariant\BaseVariant;
 use App\Repository\BookVariantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Entity\Articles\Book\Book;
 use App\Entity\Formats\Interfaces\FormatInterface;
 use App\Entity\Formats\BookFormat;
 

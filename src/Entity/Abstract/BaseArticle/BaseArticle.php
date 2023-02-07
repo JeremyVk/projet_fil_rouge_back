@@ -6,6 +6,8 @@ namespace App\Entity\Abstract\BaseArticle;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Articles\Book\Book;
+use ApiPlatform\Metadata\ApiFilter;
+use App\Filters\AllBookSearchFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
@@ -13,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use App\Entity\Abstract\BaseVariant\BaseVariant;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
 use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
@@ -27,6 +30,8 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
     denormalizationContext: ['groups' => ['write:books']],
     order: ['variants.unitPrice' => 'ASC']
 )]
+#[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
+#[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
 abstract class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]

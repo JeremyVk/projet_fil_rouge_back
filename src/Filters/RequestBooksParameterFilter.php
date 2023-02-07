@@ -7,25 +7,18 @@ use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\PropertyInfo\Type;
 
-final class AllBookSearchFilter extends AbstractFilter
+final class RequestBooksParameterFilter extends AbstractFilter
 {
 
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
-        $querys = explode(" ", $value);
+        $ids = explode(",", $value);
 
-        foreach($querys as $query) {
-            $queryBuilder  
-            ->orWhere("o.title LIKE :value")
-            // ->orWhere("o.editor LIKE :value")
-            // ->orWhere("o.resume LIKE :value")
-            ->setParameter('value', "%" . $query . "%");  
-        } 
-
-        // $queryBuilder
-        // ->orderBy("o.stock", "DESC");
+        $queryBuilder
+            ->andWhere("o.id IN (:ids)")
+            ->setParameter("ids", $ids)
+        ;
 }
 
     // This function is only used to hook in documentation generators (supported by Swagger and Hydra)

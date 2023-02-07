@@ -4,9 +4,9 @@ namespace App\Services\Order\OrderItem;
 
 use App\Entity\OrderItem;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Exceptions\EcommerceErrorException;
 use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class OrderItemFactory
 {
@@ -14,7 +14,7 @@ class OrderItemFactory
     public function __construct(
         private EntityManagerInterface $entityManager,
     )
-    {  
+    {
     }
 
     public function buildOrderdItem(BaseVariantInterface $baseVariant, int $quantity): BaseOrderItemInterface
@@ -24,7 +24,7 @@ class OrderItemFactory
         $stockDecremented = $baseVariant->getStock() - $quantity;
 
         if($stockDecremented < 0) {
-            throw new Exception("A Product is not in stock");
+            throw new EcommerceErrorException(EcommerceErrorException::PRODUCT_STOCK_EMPTY);
         }
 
         $baseVariant->setStock($stockDecremented);
