@@ -33,5 +33,6 @@ security:
     access_control:
         # - { path: api/orders, roles: ROLE_USER }
         - { path: /api, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
+        - { path: /admin, roles: PUBLIC_ACCESS }
         - { path: ^/authentication_token, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

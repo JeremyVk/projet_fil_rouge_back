@@ -34,7 +34,7 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
 #[ApiFilter(AllBookSearchFilter::class, properties: ["search"])]
-abstract class BaseArticle implements BaseArticleInterface
+class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -155,5 +155,10 @@ abstract class BaseArticle implements BaseArticleInterface
         if ($this->variants->removeElement($variant)) {
             // set the owning side to null (unless already changed)
         }
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 }

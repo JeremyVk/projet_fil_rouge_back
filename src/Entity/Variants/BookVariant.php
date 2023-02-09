@@ -46,4 +46,9 @@ class BookVariant extends BaseVariant
     {
         $this->format = $format;
     }
+
+    public function __toString(): string
+    {
+        return $this->getParent()->getTitle() . ' ' .   $this->format->getName();
+    }
 }
