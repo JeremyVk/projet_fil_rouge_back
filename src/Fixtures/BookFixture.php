@@ -139,6 +139,28 @@ class BookFixture extends Fixture
                 ],
             ]
         ],
+        [
+            'title' =>    'React comme vous ne l\'avez jamais vu',
+            'resume' => "Les étapes clef pour apprendre react",
+            'editor' => 'Aparis',
+            'author' => 'Reaaaact',
+            'gender' => 'Apprentissage Informatique',
+            'image' => 'assets/images/javascript.jpeg',
+            'variants' => [
+                [
+                    'stock' => 10,
+                    'unitPrice' => 1500,
+                    'isbnNumber' => 15786896,
+                    'format' => 1,
+                ],
+                [
+                    'stock' => 30,
+                    'unitPrice' => 550,
+                    'isbnNumber' => 157868969,
+                    'format' => 2,
+                ],
+            ]
+        ],
     ];
 
     public function __construct(private BookFormatRepository $bookFormatRepository)

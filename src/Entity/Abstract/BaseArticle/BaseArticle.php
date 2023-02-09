@@ -28,10 +28,12 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 #[ApiResource(
     normalizationContext: ['groups' => ['read:article', 'read:article', 'read:bookVariant', 'read:baseVariant']],
     denormalizationContext: ['groups' => ['write:books']],
-    order: ['variants.unitPrice' => 'ASC']
+    order: ['variants.unitPrice' => 'ASC'],
+    paginationEnabled: true,
+    paginationItemsPerPage: 2
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
-#[ApiFilter(AllBookSearchFilter::class, properties: ["title", "resume", "editor"])]
+#[ApiFilter(AllBookSearchFilter::class, properties: ["search"])]
 abstract class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]

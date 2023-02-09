@@ -14,10 +14,14 @@ final class AllBookSearchFilter extends AbstractFilter
 
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
+        if ($property !== "query") {
+            return;
+        }
+
         $querys = explode(" ", $value);
 
         foreach($querys as $query) {
-            $queryBuilder  
+            $queryBuilder
             ->orWhere("o.title LIKE :value")
             // ->orWhere("o.editor LIKE :value")
             // ->orWhere("o.resume LIKE :value")
