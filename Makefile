@@ -8,7 +8,7 @@ build:
 	composer self-update
 	composer install
 init:
-	symfony console doctrine:database:drop --force
-	symfony console doctrine:database:create
-	symfony console doctrine:migration:migrate --no-interaction
-	symfony console doctrine:fixture:load --no-interaction
+	php bin/console doctrine:database:drop --force
+	php bin/console doctrine:database:create
+	php bin/console doctrine:migration:migrate --no-interaction
+	php bin/console doctrine:fixture:load --no-interaction
