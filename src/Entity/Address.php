@@ -107,4 +107,9 @@ class Address
     {
         $this->user = $user;
     }
+
+    public function __toString(): string
+    {
+        return $this->firstname . ' ' . $this->lastname . ' ' . $this->street . ' ' . $this->postalCode . '';
+    }
 }

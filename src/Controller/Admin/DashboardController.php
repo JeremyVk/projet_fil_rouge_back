@@ -9,8 +9,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use App\Controller\Admin\BaseArticleCrudController;
 use App\Entity\Articles\Book\Book;
+use App\Entity\Formats\BookFormat;
+use App\Entity\Order;
+use App\Entity\User;
 use App\Entity\Variants\BookVariant;
 
 class DashboardController extends AbstractDashboardController
@@ -21,7 +23,7 @@ class DashboardController extends AbstractDashboardController
         // return parent::index();
 
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-         $url = $routeBuilder->setController(BaseArticleCrudController::class)->generateUrl();
+         $url = $routeBuilder->setController(BookCrudController::class)->generateUrl();
 
         return $this->redirect($url);
 //         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
@@ -56,8 +58,22 @@ class DashboardController extends AbstractDashboardController
     {
         // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'homepage');
-        yield MenuItem::linkToCrud('Livres', '', Book::class);
-        yield MenuItem::linkToCrud('Variants de livres', '', BookVariant::class);
+        yield MenuItem::subMenu('Articles')->setSubItems([
+            MenuItem::section('Livres'),
+            MenuItem::linkToCrud('Livres', '', Book::class),
+            MenuItem::linkToCrud('Variants de livres', '', BookVariant::class),
+            MenuItem::linkToCrud('Formats de livres', '', BookFormat::class),
+        ]);
+
+        // yield MenuItem::linkToCrud('Livres', '', Book::class);
+        // yield MenuItem::linkToCrud('Variants de livres', '', BookVariant::class);
+        // yield MenuItem::linkToCrud('Formats de livres', '', BookFormat::class);
+
+        yield MenuItem::section('Utilisateurs');
+        yield MenuItem::linkToCrud('Utilisateurs', '', User::class);
+
+        yield MenuItem::section('Commandes');
+        yield MenuItem::linkToCrud('Commandes', '', Order::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }

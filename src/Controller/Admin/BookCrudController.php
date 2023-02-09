@@ -33,8 +33,6 @@ class BookCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(EntityFilter::new('variants'))
-            ->add('title')
         ;
     }
     public function configureFields(string $pageName): iterable

@@ -30,7 +30,7 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
     denormalizationContext: ['groups' => ['write:books']],
     order: ['variants.unitPrice' => 'ASC'],
     paginationEnabled: true,
-    paginationItemsPerPage: 2
+    paginationItemsPerPage: 6
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
 #[ApiFilter(AllBookSearchFilter::class, properties: ["search"])]

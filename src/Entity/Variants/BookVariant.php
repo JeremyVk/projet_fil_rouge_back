@@ -19,7 +19,7 @@ class BookVariant extends BaseVariant
 {
     #[ORM\Column(name: 'isbn_number', nullable: false)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
-    private string $isbnNumber;
+    private int $isbnNumber;
 
     #[ORM\ManyToOne(targetEntity: BookFormat::class)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
