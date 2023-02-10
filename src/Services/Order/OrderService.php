@@ -66,8 +66,7 @@ class OrderService
     public function buildOrder($orderData): Order
     {
         $order = new Order;
-        $user = $this->userRepository->find($orderData['user']['id']);
-
+        $user = $this->security->getUser();
         if (!$user) {
             throw new UnauthorizedHttpException("user not connected or user not found");
         }
