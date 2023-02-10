@@ -19,7 +19,7 @@ class BookVariant extends BaseVariant
 {
     #[ORM\Column(name: 'isbn_number', nullable: false)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
-    private string $isbnNumber;
+    private int $isbnNumber;
 
     #[ORM\ManyToOne(targetEntity: BookFormat::class)]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
@@ -45,5 +45,10 @@ class BookVariant extends BaseVariant
     public function setFormat(FormatInterface $format)
     {
         $this->format = $format;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getParent()->getTitle() . ' ' .   $this->format->getName();
     }
 }

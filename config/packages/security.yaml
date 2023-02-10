@@ -1,8 +1,8 @@
 security:
     # https://symfony.com/doc/current/security.html#c-hashing-passwords
     password_hashers:
-        App\Entity\User: 'auto'
-
+        App\Entity\User:
+            algorithm: auto
     # https://symfony.com/doc/current/security/authenticator_manager.html
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
@@ -12,26 +12,37 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         dev:
             pattern: ^/_(profiler|wdt)
             security: false
         api:
             pattern: ^/api/
             stateless: true
-            provider: app_user_provider
             jwt: ~
         main:
-            json_login:
-                check_path: /authentication_token
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path: app_logout
+            provider: app_user_provider
 
-    access_control:
-        # - { path: api/orders, roles: ROLE_USER }
-        - { path: /api, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
-        - { path: ^/authentication_token, roles: PUBLIC_ACCESS }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+    access_control:     
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: api/orders, roles: ROLE_USER }
+        - { path: ^/api, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
+        - { path: /login, roles: PUBLIC_ACCESS }
+        - { path: /admin, roles: ROLE_ADMIN }
+        # - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
