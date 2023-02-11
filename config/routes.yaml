@@ -10,3 +10,5 @@ dashboard:
 app_logout:
     path: /logout
     methods: GET
+api_refresh_token:
+    path: /api/token/refresh
