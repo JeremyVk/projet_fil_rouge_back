@@ -26,6 +26,7 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 #[ApiResource(
     normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant', 'read:article']],
     denormalizationContext: ['groups' => ['write:bookVariant', 'write:baseVariant']],
+    order: ['unitPrice' => 'ASC'],
 )]
 #[ApiFilter(RequestBooksParameterFilter::class, properties: ["id"])]
 abstract class BaseVariant implements BaseVariantInterface
@@ -43,10 +44,6 @@ abstract class BaseVariant implements BaseVariantInterface
     #[ORM\Column(name: 'unit_price')]
     #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
     private float $unitPrice;
-
-    #[ORM\ManyToOne(targetEntity:BaseArticle::class, inversedBy:'variants')]
-    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", "write:article"])]
-    private BaseArticleInterface $parent;
 
     public function getId(): int
     {
@@ -73,13 +70,9 @@ abstract class BaseVariant implements BaseVariantInterface
         $this->unitPrice = $unitPrice;
     }
 
-    public function getParent(): BaseArticleInterface
-    {
-        return $this->parent;
-    }
+    abstract function getParent(): BaseArticleInterface;
 
-    public function setParent(BaseArticleInterface $parent): void
-    {
-        $this->parent = $parent;
-    }
+
+    abstract function setParent(BaseArticleInterface $parent): void;
+
 }

@@ -28,13 +28,12 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 #[ApiResource(
     normalizationContext: ['groups' => ['read:article', 'read:article', 'read:bookVariant', 'read:baseVariant']],
     denormalizationContext: ['groups' => ['write:books']],
-    order: ['variants.unitPrice' => 'ASC'],
     paginationEnabled: true,
     paginationItemsPerPage: 6
 )]
 #[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
-#[ApiFilter(AllBookSearchFilter::class, properties: ["search"])]
-class BaseArticle implements BaseArticleInterface
+#[ApiFilter(AllBookSearchFilter::class, properties: ["format"])]
+abstract class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -53,15 +52,6 @@ class BaseArticle implements BaseArticleInterface
     #[ORM\Column(name: 'image', length: 255)]
     #[Groups(['read:article', 'write:article', ])]
     private string $image;
-
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BaseVariant::class, orphanRemoval: true, cascade: ['persist'])]
-    #[Groups(['read:article', 'write:article'])]
-    private Collection $variants;
-
-    public function __construct()
-    {
-        $this->variants = new ArrayCollection();
-    }
 
     public function getId(): int
     {
@@ -137,25 +127,11 @@ class BaseArticle implements BaseArticleInterface
         /**
      * @return ?Collection<int, variant>
      */
-    public function getVariants(): ?Collection
-    {
-        return $this->variants;
-    }
+    abstract function getVariants(): ?Collection;
 
-    public function addVariant(BaseVariantInterface $variant): void
-    {
-        if (!$this->variants->contains($variant)) {
-            $this->variants->add($variant);
-            $variant->setParent($this);
-        }
-    }
+    abstract function addVariant(BaseVariantInterface $variant): void;
 
-    public function removeVariant(BaseVariantInterface $variant): void
-    {
-        if ($this->variants->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-        }
-    }
+    abstract function removeVariant(BaseVariantInterface $variant): void;
 
     public function __toString(): string
     {

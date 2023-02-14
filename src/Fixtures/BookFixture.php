@@ -22,10 +22,10 @@ class BookFixture extends Fixture
             'image' => 'assets/images/javascript.jpeg',
             'variants' => [
                 [
-                    'stock' => 10,
-                    'unitPrice' => 4000,
+                    'stock' => 45,
+                    'unitPrice' => 400,
                     'isbnNumber' => 15786896,
-                    'format' => 1,
+                    'format' => 5,
                 ],
             ]
         ],
