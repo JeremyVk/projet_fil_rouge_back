@@ -16,26 +16,20 @@ class UserPostProcessor implements ProcessorInterface
     }
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        dd($data);
-        if ($operation instanceof Put) {
-            // $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
-            // dd($data, $hashedPassword);
-            dd($this->passwordHasher->isPasswordValid($data, $data->getPlainPassword()));
-        }
-        if (!$data->getPlainPassword()) {
+        if ($operation instanceof Put && $data->getPlainPassword()) {
+            $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
+            $data->setPassword($hashedPassword);
+           
             return $this->em->flush($data);
         }
 
-        if ($data->getPlainPassword()) {
-            $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
-            $data->setPassword($hashedPassword);
-            $this->em->persist($data);
-            return $this->em->flush();
+        if ($operation instanceof Put) {
+            return $this->em->flush($data);
         }
+        
+        $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPassword());
+        $data->setPassword($hashedPassword);
 
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $data,
-            $data->getPlainPassword()
-        );
+        return $this->em->flush($data);
     }
 }

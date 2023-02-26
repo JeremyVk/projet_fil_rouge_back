@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AddressRepository;
 use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ApiResource(
@@ -20,7 +22,7 @@ use ApiPlatform\Metadata\GetCollection;
         fromProperty: 'addresses'
     )
     ],
-   operations: [ new GetCollection() ]
+   operations: [ new GetCollection(), new Put()]
 )]
 class Address
 {
@@ -42,7 +44,8 @@ class Address
     private ?string $postalCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'addresses', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['write:users'])]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -103,7 +106,7 @@ class Address
         return $this->user;
     }
 
-    public function setUser(User $user): void
+    public function setUser(?User $user): void
     {
         $this->user = $user;
     }

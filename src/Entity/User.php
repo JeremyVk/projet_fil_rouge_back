@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\ResetPasswordController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,7 +29,14 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['write:users']],
 )]
 #[Post(processor: UserPostProcessor::class)]
-#[Put(processor: UserPostProcessor::class)]
+#[Put()]
+#[Put(
+    name: "reset_password",
+    uriTemplate: '/users/reset_password',
+    controller: ResetPasswordController::class,
+    read: false,
+    processor: UserPostProcessor::class
+)]
 #[GetCollection(
     name: 'getMe',
     uriTemplate: '/getMe',
@@ -36,6 +44,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => 'read:users']
 )]
 #[GetCollection()]
+#[Collection(
+    operations: ['put', "get', 'delete'"]
+)]
 #[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -198,6 +209,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->addresses->contains($address)) {
             $this->addresses->removeElement($address);
+            $address->setUser(null);
         }
     }
 }
