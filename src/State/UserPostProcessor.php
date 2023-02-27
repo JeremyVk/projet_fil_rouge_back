@@ -3,6 +3,7 @@
 namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\State\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -13,12 +14,23 @@ class UserPostProcessor implements ProcessorInterface
     {
         
     }
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        // Handle the state
-        $data->setPassword($this->passwordHasher->hashPassword($data, $data->getPassword()));
+        if ($operation instanceof Put && $data->getPlainPassword()) {
+            $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
+            $data->setPassword($hashedPassword);
+           
+            return $this->em->flush($data);
+        }
+
+        if ($operation instanceof Put) {
+            return $this->em->flush($data);
+        }
+
+        $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
+        $data->setPassword($hashedPassword);
         $this->em->persist($data);
-        $this->em->flush();
-        // dd($data);
+
+        return $this->em->flush($data);
     }
 }

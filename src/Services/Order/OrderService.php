@@ -21,7 +21,6 @@ class OrderService
 {
     public const ORDER_DATA_NEEDED = [
         'orderItems',
-        'user',
         'shippingAmount',
         'shippingAddress'
     ];

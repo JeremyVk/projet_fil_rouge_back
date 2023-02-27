@@ -2,23 +2,26 @@
 
 namespace App\Entity;
 
+use Assert\NotBlank;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use App\State\UserPostProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Put;
 use App\Controller\GetUserController;
-use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\ResetPasswordController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -26,7 +29,14 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     denormalizationContext: ['groups' => ['write:users']],
 )]
 #[Post(processor: UserPostProcessor::class)]
-#[Put(processor: UserPostProcessor::class)]
+#[Put()]
+#[Put(
+    name: "reset_password",
+    uriTemplate: '/users/reset_password',
+    controller: ResetPasswordController::class,
+    read: false,
+    processor: UserPostProcessor::class
+)]
 #[GetCollection(
     name: 'getMe',
     uriTemplate: '/getMe',
@@ -34,6 +44,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     normalizationContext: ['groups' => 'read:users']
 )]
 #[GetCollection()]
+#[Collection(
+    operations: ['put', "get', 'delete'"]
+)]
 #[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -57,6 +70,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['write:users'])]
     private string $password;
+
+    // #[Assert\NotBlank(groups: ['write:users'])]
+    #[Groups(['write:users'])]
+    private ?string $plainPassword = null;
 
     #[ORM\Column(name: 'firstname', length: 100)]
     #[Groups(['read:users', 'write:users'])]
@@ -136,13 +153,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
     /**
      * @see UserInterface
      */
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getFirstname(): string
@@ -182,6 +209,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->addresses->contains($address)) {
             $this->addresses->removeElement($address);
+            $address->setUser(null);
         }
     }
 }
