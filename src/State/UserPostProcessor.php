@@ -26,9 +26,10 @@ class UserPostProcessor implements ProcessorInterface
         if ($operation instanceof Put) {
             return $this->em->flush($data);
         }
-        
-        $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPassword());
+
+        $hashedPassword = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
         $data->setPassword($hashedPassword);
+        $this->em->persist($data);
 
         return $this->em->flush($data);
     }
