@@ -14,21 +14,21 @@ use App\Entity\Formats\BookFormat;
 
 #[ORM\Entity(repositoryClass: BookVariantRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant', 'read:article']],
+    normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant', 'read:article', 'read:order']],
     denormalizationContext: ['groups' => ['write:bookVariant', 'write:baseVariant']],
 )]
 class BookVariant extends BaseVariant
 {
     #[ORM\Column(name: 'isbn_number', nullable: false)]
-    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
+    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:order'])]
     private int $isbnNumber;
 
     #[ORM\ManyToOne(targetEntity: BookFormat::class)]
-    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant'])]
+    #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:order'])]
     private FormatInterface $format;
 
     #[ORM\ManyToOne(targetEntity:Book::class, inversedBy:'variants')]
-    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", "write:article"])]
+    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", "write:article", 'read:order'])]
     private BaseArticleInterface $parent;
 
     public function getIsbnNumber(): int

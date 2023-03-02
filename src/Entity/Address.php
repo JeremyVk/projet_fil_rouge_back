@@ -32,15 +32,19 @@ class Address
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:order'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:order'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read:order'])]
     private ?string $street = null;
 
     #[ORM\Column(length: 8)]
+    #[Groups(['read:order'])]
     private ?string $postalCode = null;
 
     #[ORM\ManyToOne(inversedBy: 'addresses', cascade: ['persist', 'remove'])]

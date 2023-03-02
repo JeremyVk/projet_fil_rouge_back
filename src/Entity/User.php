@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:users'])]
+    #[Groups(['read:users', 'read:order'])]
     private int $id;
 
     #[ORM\Column(length: 180, unique: true)]
@@ -86,6 +86,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', cascade: ['persist', 'remove'], targetEntity: Address::class)]
     #[Groups(['read:users', 'write:users'])]
     private ?Collection $addresses = null;
+
+
+    #[ORM\OneToMany(mappedBy: 'user', cascade: ['persist', 'remove'], targetEntity: Order::class)]
+    #[Groups(['read:users', 'write:users'])]
+    private ?Collection $orders = null;
 
     public function __construct()
     {
@@ -211,5 +216,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->addresses->removeElement($address);
             $address->setUser(null);
         }
+    }
+
+    public function getOrders(): ?Collection
+    {
+        return $this->orders;
     }
 }

@@ -22,7 +22,7 @@ class OrderService
     public const ORDER_DATA_NEEDED = [
         'orderItems',
         'shippingAmount',
-        'shippingAddress'
+        'shippingAddressId'
     ];
 
     public function __construct(
@@ -75,7 +75,7 @@ class OrderService
         $lastOrderRegistered = $this->orderRepository->findLastOrderNumber();
         $order->setNumber($lastOrderRegistered ? (int) $lastOrderRegistered->getNumber() + 1 : 1);
 
-        $shippingAddress = $this->addressRepository->find($orderData['shippingAddress']);
+        $shippingAddress = $this->addressRepository->find($orderData['shippingAddressId']);
 
         if(!$shippingAddress) {
             throw new Exception("address not found");
@@ -112,7 +112,7 @@ class OrderService
         foreach($order->getOrderItems() as $item) {
             $orderTotalAmount += $item->getPrice() * $item->getQuantity();
         }
-        $orderTotalAmount += $order->getShippingAmount();
+        // $orderTotalAmount += $order->getShippingAmount();
 
         return $orderTotalAmount;
     }
