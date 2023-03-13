@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 
 class BookVariantCrudController extends AbstractCrudController
 {
@@ -34,7 +36,7 @@ class BookVariantCrudController extends AbstractCrudController
             AssociationField::new('format'),
             NumberField::new("stock"),
             NumberField::new("isbnNumber"),
-            NumberField::new("unitPrice"),
+            MoneyField::new("unitPrice")->setCurrency('EUR')
         ];
 
         if ($parentId) {
