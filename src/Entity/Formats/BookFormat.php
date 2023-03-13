@@ -13,7 +13,7 @@ use App\Entity\Variants\BookVariant;
 
 #[ORM\Entity(repositoryClass: BookFormatRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:bookFormats', 'read:books']],
+    normalizationContext: ['groups' => ['read:bookFormats', 'read:books', 'read:order']],
     denormalizationContext: ['groups' => ['write:bookVariant', 'write:bookFormats']],
 )]
 class BookFormat implements FormatInterface
@@ -25,7 +25,7 @@ class BookFormat implements FormatInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read:bookFormats', 'read:bookVariant', 'read:books'])]
+    #[Groups(['read:bookFormats', 'read:bookVariant', 'read:books', 'read:order'])]
     private ?string $name = null;
 
     public function getId(): int

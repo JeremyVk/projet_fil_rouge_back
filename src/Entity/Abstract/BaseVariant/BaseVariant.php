@@ -24,7 +24,7 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 #[DiscriminatorColumn(name: 'type', type: 'string')]
 #[DiscriminatorMap(['BookVariant' => BookVariant::class])]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant', 'read:article']],
+    normalizationContext: ['groups' => ['read:bookVariant', 'read:baseVariant', 'read:article', 'read:order']],
     denormalizationContext: ['groups' => ['write:bookVariant', 'write:baseVariant']],
     order: ['unitPrice' => 'ASC'],
 )]
@@ -42,7 +42,7 @@ abstract class BaseVariant implements BaseVariantInterface
     private int $stock;
 
     #[ORM\Column(name: 'unit_price')]
-    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article"])]
+    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", 'read:order'])]
     private float $unitPrice;
 
     public function getId(): int

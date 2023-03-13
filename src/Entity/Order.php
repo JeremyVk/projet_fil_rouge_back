@@ -3,13 +3,18 @@
 namespace App\Entity;
 
 use App\Entity\User;
+use App\Entity\Address;
+use App\Entity\OrderItem;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ApiResource(
@@ -17,6 +22,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['write:order']],
 )]
 #[ORM\Table(name: '`order`')]
+#[ApiResource(
+    uriTemplate: '/users/{id}/orders',
+    uriVariables: [
+     'id' => new Link(
+         fromClass: User::class,
+         fromProperty: 'orders'
+     )
+     ],
+    operations: [ new GetCollection()]
+ )]
 class Order
 {
     #[ORM\Id]
@@ -33,7 +48,7 @@ class Order
     #[Groups(['read:order', 'write:order'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'], inversedBy: "orders")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:order', 'write:order'])]
     private ?User $user = null;
@@ -43,12 +58,15 @@ class Order
     private ?float $amount = null;
 
     #[ORM\OneToMany(mappedBy: 'ordered', targetEntity: OrderItem::class, cascade: ['persist'])]
+    #[Groups(['read:order'])]
     private Collection $orderItems;
 
     #[ORM\Column(type: 'integer', name: 'shipping_amount')]
+    #[Groups(['read:order'])]
     private ?int $shippingAmount = null;
 
     #[ORM\ManyToOne(targetEntity:Address::class)]
+    #[Groups(['read:order'])]
     private Address $shippingAddress;
 
     public function __construct()

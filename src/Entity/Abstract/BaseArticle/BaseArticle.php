@@ -42,7 +42,7 @@ abstract class BaseArticle implements BaseArticleInterface
     private int $id;
 
     #[ORM\Column(name: 'title', length: 255)]
-    #[Groups(['read:article', 'write:article', ])]
+    #[Groups(['read:article', 'write:article', 'read:order'])]
     private string $title;
 
     #[ORM\Column(name: 'resume', length: 500)]
@@ -50,7 +50,7 @@ abstract class BaseArticle implements BaseArticleInterface
     private string $resume;
 
     #[ORM\Column(name: 'image', length: 255)]
-    #[Groups(['read:article', 'write:article', ])]
+    #[Groups(['read:article', 'write:article', 'read:order'])]
     private string $image;
 
     public function getId(): int

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderItemRepository;
 use App\Entity\Abstract\BaseVariant\BaseVariant;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
 use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
 
@@ -25,12 +26,15 @@ class OrderItem implements BaseOrderItemInterface
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:order'])]
     private ?BaseVariant $variant = null;
 
     #[ORM\Column]
+    #[Groups(['read:order'])]
     private ?int $quantity = null;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:order'])]
     private ?int $price;
 
     public function getId(): ?int

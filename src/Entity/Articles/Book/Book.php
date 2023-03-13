@@ -28,7 +28,7 @@ use Doctrine\Common\Collections\Collection;
 class Book extends BaseArticle
 {
     #[ORM\Column(length: 255, name: 'editor')]
-    #[Groups(['read:article', 'write:books', 'read:baseVariant'])]
+    #[Groups(['read:article', 'write:books', 'read:baseVariant', 'read:order'])]
     private ?string $editor = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: BookVariant::class, orphanRemoval: true, cascade: ['persist'])]
