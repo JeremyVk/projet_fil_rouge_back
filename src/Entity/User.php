@@ -29,7 +29,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['write:users']],
 )]
 #[Post(processor: UserPostProcessor::class)]
-#[Put()]
 #[Put(
     name: "reset_password",
     uriTemplate: '/users/reset_password',
@@ -37,6 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     read: false,
     processor: UserPostProcessor::class
 )]
+#[Put()]
 #[GetCollection(
     name: 'getMe',
     uriTemplate: '/getMe',

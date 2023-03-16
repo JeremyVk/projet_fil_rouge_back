@@ -1,0 +1,63 @@
+<table width="100%">
+    <tr>
+        <td valign="top"><img src="{{asset('images/meteor-logo.png')}}" alt="" width="150"/></td>
+        <td align="right">
+            <h3>L2i Compagny</h3>
+            <pre>
+                L2i
+            </pre>
+        </td>
+    </tr>
+</table>
+
+  <table width="100%">
+    <tr>
+        <td><strong>De:</strong>L2i Compagny</td>
+        <td><strong>Pour:</strong> {{ order.user.firstname }} {{ order.user.lastname }}</td>
+    </tr>
+
+  </table>
+
+  <br/>
+
+  <table width="100%">
+    <thead style="background-color: lightgray;">
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th>Quantité</th>
+        <th>Prix unitaire €</th>
+        <th>Total €</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in order.orderItems %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ item.variant.parent.title }}: {{ item.variant.format.name }}</td>
+        <td align="right">{{ item.quantity }}</td>
+        <td align="right">{{ item.price / 100 }}</td>
+        <td align="right">{{ (item.price * item.quantity) / 100 }}</td>
+      </tr>
+    {% endfor %}
+
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td colspan="3"></td>
+            <td align="right">Total €</td>
+            <td align="right">{{ order.amount / 100 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td align="right">Livraison</td>
+            <td align="right">{{ order.shippingAmount / 100 }}</td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td align="right">Total TTC</td>
+            <td align="right" class="gray">{{ (order.amount + order.shippingAmount) / 100 }}</td>
+        </tr>
+    </tfoot>
+  </table>

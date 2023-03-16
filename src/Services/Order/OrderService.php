@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Security;
 use App\Services\Order\OrderItem\OrderItemFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
+use App\Services\Invoice\InvoiceFactory;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class OrderService
@@ -33,6 +34,7 @@ class OrderService
         private UserRepository $userRepository,
         private Security $security,
         private AddressRepository $addressRepository,
+        private InvoiceFactory $invoiceFactory,
     )
     {
     }
@@ -91,6 +93,7 @@ class OrderService
         $order->setShippingAmount($orderData['shippingAmount']);
         $order->setCreatedAt(new DateTimeImmutable());
         $order->setAmount($this->calculateOrderTotalAmount($order));
+        $order->setInvoice($this->invoiceFactory->generateInvoice($order));
 
         return $order;
     }
