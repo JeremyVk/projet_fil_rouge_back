@@ -10,7 +10,9 @@ use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\OrderRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\Invoice\InvoiceController;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -32,6 +34,12 @@ use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
      ],
     operations: [ new GetCollection()]
  )]
+#[Get(
+    name: 'invoice',
+    uriTemplate: '/orders/{id}/invoice',
+    controller: InvoiceController::class,
+    read: false
+)]
 class Order
 {
     #[ORM\Id]
@@ -68,6 +76,10 @@ class Order
     #[ORM\ManyToOne(targetEntity:Address::class)]
     #[Groups(['read:order'])]
     private Address $shippingAddress;
+
+    #[ORM\Column]
+    #[Groups(['write:order'])]
+    private string $invoice;
 
     public function __construct()
     {
@@ -175,5 +187,15 @@ class Order
     public function setShippingAddress(Address $shippingAddress): void
     {
         $this->shippingAddress = $shippingAddress;
+    }
+
+    public function getInvoice(): string
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(string $invoice)
+    {
+        $this->invoice = $invoice;
     }
 }
