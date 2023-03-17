@@ -63,4 +63,27 @@ App\Entity\Address:
           minMessage: 'app.form.error.address.city.min_length'
       - NotBlank:
           message: 'app.form.field.needed'
+App\Entity\OrderItem:
+  properties:
+    ordered:
+      - NotNull: ~
+    variant:
+      - NotNull: ~
+    quantity:
+      - NotNull: ~
+    price:
+      - NotNull: ~
+    tax:
+      - NotNull: ~
+App\Entity\Tax:
+  properties:
+    name:
+      - NotNull: ~
+    amount:
+      - NotNull: ~
+App\Entity\Abstract\BaseVariant:
+  groups: [oui]
+  properties:
+    stock:
+      - NotNull:
     
