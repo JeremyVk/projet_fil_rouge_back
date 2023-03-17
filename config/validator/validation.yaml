@@ -23,3 +23,44 @@ App\Entity\User:
       - Length:
           min: 8
           minMessage: 'app.form.error.password.min_length'
+App\Entity\Address:
+  properties:
+    firstname:
+      - Length:
+          min: 3
+          max: 30
+          maxMessage: 'app.form.error.address.firstname.max_length'
+          minMessage: 'app.form.error.address.firstname.min_length'
+      - NotBlank:
+          message: 'app.form.field.needed'
+    lastname:
+      - Length:
+          min: 3
+          max: 30
+          maxMessage: 'app.form.error.address.lastname.max_length'
+          minMessage: 'app.form.error.address.lastname.min_length'
+      - NotBlank:
+          message: 'app.form.field.needed'
+    street:
+      - Length:
+          min: 3
+          max: 255
+          maxMessage: 'app.form.error.address.street.max_length'
+          minMessage: 'app.form.error.address.street.min_length'
+      - NotBlank:
+          message: 'app.form.field.needed'
+    postalCode:
+      - Length:
+          min: 5
+          max: 5
+          maxMessage: 'app.form.error.address.postal_code'
+          minMessage: 'app.form.error.address.postal_code'
+    city:
+      - Length:
+          min: 3
+          max: 255
+          maxMessage: 'app.form.error.address.city.max_length'
+          minMessage: 'app.form.error.address.city.min_length'
+      - NotBlank:
+          message: 'app.form.field.needed'
+    
