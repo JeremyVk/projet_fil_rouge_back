@@ -5,6 +5,7 @@ namespace App\Services\Invoice;
 use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Order;
+use Dompdf\Options;
 
 class InvoiceFactory extends AbstractController
 {

@@ -1,6 +1,6 @@
 <table width="100%">
     <tr>
-        <td valign="top"><img src="{{asset('images/meteor-logo.png')}}" alt="" width="150"/></td>
+        {# <td valign="top"><img src="https://www.2itechacademy.com/wp-content/uploads/2023/02/logo-2i-academy.png" alt="" width="150"/></td> #}
         <td align="right">
             <h3>L2i Compagny</h3>
             <pre>
@@ -13,7 +13,12 @@
   <table width="100%">
     <tr>
         <td><strong>De:</strong>L2i Compagny</td>
-        <td><strong>Pour:</strong> {{ order.user.firstname }} {{ order.user.lastname }}</td>
+        <td>
+          <p><strong>Pour:</strong> <br>
+          {{ order.user.firstname }} {{ order.user.lastname }} <br> 
+          {{ order.shippingAddress.street }} <br>
+          {{ order.shippingAddress.postalCode }}    
+        </td>
     </tr>
 
   </table>

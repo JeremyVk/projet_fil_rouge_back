@@ -29,7 +29,7 @@ RUN cd /var/www && \
     composer install
 
 RUN cd /var/www && \
-    php bin/console lexik:jwt:generate-keypair
+    php bin/console lexik:jwt:generate-keypair --overwrite
 
 WORKDIR /var/www/
 

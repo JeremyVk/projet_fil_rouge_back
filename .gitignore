@@ -14,3 +14,4 @@
 ###< lexik/jwt-authentication-bundle ###
 /.DS_Store
 .DS_Store
+/private
