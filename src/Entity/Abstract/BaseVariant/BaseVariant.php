@@ -13,10 +13,10 @@ use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
 use App\Filters\RequestBooksParameterFilter;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
-use App\Entity\Abstract\BaseArticle\BaseArticle;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Abstract\BaseArticle\BaseArticleInterface;
 use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
+use App\Entity\Tax;
 
 #[ORM\Entity()]
 #[ORM\Table('shop_product_variant')]
@@ -44,6 +44,10 @@ abstract class BaseVariant implements BaseVariantInterface
     #[ORM\Column(name: 'unit_price')]
     #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", 'read:order'])]
     private float $unitPrice;
+
+    #[ORM\ManyToOne(targetEntity: Tax::class)]
+    #[Groups(['read:baseVariant', 'write:baseVariant', "read:article", 'read:order'])]
+    private Tax $tax;
 
     public function getId(): int
     {
@@ -75,4 +79,13 @@ abstract class BaseVariant implements BaseVariantInterface
 
     abstract function setParent(BaseArticleInterface $parent): void;
 
+    public function getTax(): Tax
+    {
+        return $this->tax;
+    }
+
+    public function setTax(Tax $tax): void
+    {
+        $this->tax = $tax;
+    }
 }

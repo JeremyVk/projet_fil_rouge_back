@@ -37,6 +37,10 @@ class OrderItem implements BaseOrderItemInterface
     #[Groups(['read:order'])]
     private ?int $price;
 
+    #[ORM\Column(type: 'float')]
+    #[Groups(['read:order'])]
+    private float $tax;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -80,5 +84,15 @@ class OrderItem implements BaseOrderItemInterface
     public function setprice(?int $price): void
     {
         $this->price = $price;
+    }
+
+    public function getTax(): float
+    {
+        return $this->tax;
+    }
+
+    public function setTax(float $tax): void
+    {
+        $this->tax = $tax;
     }
 }
