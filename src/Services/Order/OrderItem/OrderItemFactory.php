@@ -32,6 +32,8 @@ class OrderItemFactory
 
         $orderItem->setPrice($baseVariant->getUnitPrice());
         $orderItem->setQuantity($quantity);
+        $orderItem->setTax($baseVariant->getTax()->getAmount());
+
         return $orderItem;
     }
 }

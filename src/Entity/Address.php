@@ -52,6 +52,10 @@ class Address
     #[Groups(['write:users'])]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(['read:order'])]
+    private ?string $city = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,5 +122,17 @@ class Address
     public function __toString(): string
     {
         return $this->firstname . ' ' . $this->lastname . ' ' . $this->street . ' ' . $this->postalCode . '';
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
     }
 }
