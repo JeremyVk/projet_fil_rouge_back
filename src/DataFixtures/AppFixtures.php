@@ -22,7 +22,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         // $product = new Product();
         // $manager->persist($product);
         $user = new User();
-        $user->setEmail('aaaaa@aaa.fr');
+        $user->setEmail('jeremvk@outlook.fr');
         $user->setPassword('aaaaa');
         $user->setRoles(['ROLE_ADMIN']);
         $user->setFirstname('jeje');
@@ -33,6 +33,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $address->setLastname("jérémy");
         $address->setPostalCode("13480");
         $address->setStreet("18 traverse de l'espargoulo");
+        $address->setCity('Calas');
 
         $user->addAddress($address);
         $manager->persist($address);
