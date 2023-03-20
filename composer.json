@@ -10,6 +10,7 @@
         "api-platform/core": "^3.0",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
         "dompdf/dompdf": "^2.0",
@@ -82,7 +83,8 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "php bin/console d:m:m --no-interaction"
         ],
         "post-update-cmd": [
             "@auto-scripts"
