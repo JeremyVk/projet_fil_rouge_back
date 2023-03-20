@@ -42,7 +42,7 @@ class BookCrudController extends AbstractCrudController
             TextEditorField::new('resume'),
             AssociationField::new('variants'),
             TextField::new('editor'),
-            ImageField::new('image')->setBasePath('/images/products')->setUploadDir('public/images/products')->setRequired(false),
+            ImageField::new('image')->setBasePath('/images/products')->setUploadDir('public/images/products')->setRequired(false)->setUploadedFileNamePattern('[contenthash].[extension]'),
         ];
     }
 
@@ -66,6 +66,14 @@ class BookCrudController extends AbstractCrudController
         ->setController(BookVariantCrudController::class)
         ->setAction(Action::NEW)
         ->generateUrl();
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Livres')
+            ->setEntityLabelInPlural('LIvre')
+        ;
     }
     
 }
