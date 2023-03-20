@@ -17,8 +17,8 @@ interface BaseArticleInterface
     public function getResume(): string;
     public function setResume(string $resume): void;
 
-    public function getImage(): string;
-    public function setImage(string $image): void;
+    public function getImage(): ?string;
+    public function setImage(?string $image): void;
 
     public function addVariant(BaseVariantInterface $variant): void;
     public function removeVariant(BaseVariantInterface $variant): void;

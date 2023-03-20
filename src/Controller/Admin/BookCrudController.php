@@ -42,7 +42,7 @@ class BookCrudController extends AbstractCrudController
             TextEditorField::new('resume'),
             AssociationField::new('variants'),
             TextField::new('editor'),
-            ImageField::new('image')->setBasePath('public/')->setUploadDir('public/')->setRequired(false)
+            ImageField::new('image')->setBasePath('/images/products')->setUploadDir('public/images/products')->setRequired(false),
         ];
     }
 

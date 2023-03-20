@@ -19,7 +19,7 @@ class BookFixture extends Fixture
             'editor' => 'Lys Bleu',
             'author' => 'cyberTech',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg',
+            'image' => 'livre-html5.jpg',
             'variants' => [
                 [
                     'stock' => 45,
@@ -35,7 +35,7 @@ class BookFixture extends Fixture
             'editor' => 'Hachette',
             'author' => 'cssLoveur',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/css3.jpeg',
+            'image' => 'css3.jpg',
             'variants' => [
                 [
                     'stock' => 10,
@@ -57,7 +57,7 @@ class BookFixture extends Fixture
             'editor' => 'Aparis',
             'author' => 'JsPlayer',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg',
+            'image' => 'javascript.jpg',
             'variants' => [
                 [
                     'stock' => 10,
@@ -79,7 +79,7 @@ class BookFixture extends Fixture
             'editor' => 'Kartier',
             'author' => 'ElephantMan',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/php-8.jpeg',
+            'image' => 'php-8.jpg',
             'variants' => [
                 [
                     'stock' => 10,
@@ -101,7 +101,7 @@ class BookFixture extends Fixture
             'editor' => 'Php music',
             'author' => 'Mozart',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg',
+            'image' => 'symfony.jpg',
             'variants' => [
                 [
                     'stock' => 10,
@@ -123,7 +123,7 @@ class BookFixture extends Fixture
             'editor' => 'Aparis',
             'author' => 'JsPlayer',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg',
+            'image' => 'nodejs.jpg',
             'variants' => [
                 [
                     'stock' => 10,
@@ -145,7 +145,7 @@ class BookFixture extends Fixture
             'editor' => 'Aparis',
             'author' => 'Reaaaact',
             'gender' => 'Apprentissage Informatique',
-            'image' => 'assets/images/javascript.jpeg',
+            'image' => 'react.jpg',
             'variants' => [
                 [
                     'stock' => 10,
