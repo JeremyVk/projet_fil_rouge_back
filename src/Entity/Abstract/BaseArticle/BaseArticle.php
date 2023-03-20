@@ -51,7 +51,7 @@ abstract class BaseArticle implements BaseArticleInterface
 
     #[ORM\Column(name: 'image', length: 255)]
     #[Groups(['read:article', 'write:article', 'read:order'])]
-    private string $image;
+    private ?string $image;
 
     public function getId(): int
     {
@@ -107,7 +107,7 @@ abstract class BaseArticle implements BaseArticleInterface
      *
      * @return string
      */
-    public function getImage(): string
+    public function getImage(): ?string
     {
         return $this->image;
     }
@@ -119,7 +119,7 @@ abstract class BaseArticle implements BaseArticleInterface
      *
      * @return self
      */
-    public function setImage(string $image): void
+    public function setImage(?string $image): void
     {
         $this->image = $image;
     }

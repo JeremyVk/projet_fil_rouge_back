@@ -36,7 +36,8 @@ class BookVariantCrudController extends AbstractCrudController
             AssociationField::new('format'),
             NumberField::new("stock"),
             NumberField::new("isbnNumber"),
-            MoneyField::new("unitPrice")->setCurrency('EUR')
+            MoneyField::new("unitPrice")->setCurrency('EUR')->setLabel('Prix unitaire TTC'),
+            AssociationField::new('tax')->setLabel('Taxe')
         ];
 
         if ($parentId) {
@@ -70,4 +71,14 @@ class BookVariantCrudController extends AbstractCrudController
             ->add(Crud::PAGE_DETAIL, $show)
         ;
     }
+
+    public function configureCrud(Crud $crud): Crud
+{
+    return $crud
+        ->setFormOptions(
+            ['validation_groups' => ['Default', 'creation']],
+            ['validation_groups' => ['Default', 'creation']]
+        )
+    ;
+}
 }

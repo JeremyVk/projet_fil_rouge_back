@@ -81,9 +81,36 @@ App\Entity\Tax:
       - NotNull: ~
     amount:
       - NotNull: ~
-App\Entity\Abstract\BaseVariant:
-  groups: [oui]
+App\Entity\Abstract\BaseVariant\BaseVariant:
   properties:
     stock:
-      - NotNull:
+      - NotNull: ~
+    unitPrice:
+      - NotNull: ~
+    tax:
+      - NotNull: ~
+App\Entity\Abstract\BaseArticle\BaseArticle:
+  properties:
+    title:
+      - NotNull: ~
+    resume:
+      - NotNull: ~
+    image:
+      - NotBlank: ~
+App\Entity\Variants\BookVariant:
+  properties:
+    isbnNumber:
+      - NotNull: ~
+    format:
+      - NotNull: ~
+    parent:
+      - NotNull: ~
+App\Entity\Articles\Book\Book:
+  properties:
+    editor:
+      - NotNull: ~
+App\Entity\Formats\BookFormats:
+  properties:
+    name:
+      - NotNull: ~
     
