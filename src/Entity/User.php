@@ -84,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $lastname;
 
     #[ORM\OneToMany(mappedBy: 'user', cascade: ['persist', 'remove'], targetEntity: Address::class)]
-    #[Groups(['read:users'])]
+    #[Groups(['read:users', 'write:users'])]
     private ?Collection $addresses = null;
 
 
