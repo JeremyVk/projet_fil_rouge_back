@@ -84,7 +84,8 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "php bin/console d:m:m --no-interaction"
+            "php bin/console d:m:m --no-interaction",
+            "php bin/console lexik:jwt:generate-keypair --skip-if-exists"
         ],
         "post-update-cmd": [
             "@auto-scripts"
