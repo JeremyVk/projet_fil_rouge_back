@@ -45,7 +45,7 @@ security:
     access_control:     
         # - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/(login_check|token/refresh), roles: PUBLIC_ACCESS }
-        - { path: api/orders, roles: ROLE_USER }
+        - { path: api/orders, roles: [ROLE_USER] }
         - { path: ^/api, roles: PUBLIC_ACCESS } # Allows accessing API documentations and Swagger UI
         - { path: /login, roles: PUBLIC_ACCESS }
         - { path: /admin, roles: ROLE_ADMIN }
