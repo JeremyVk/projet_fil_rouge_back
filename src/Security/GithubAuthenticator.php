@@ -85,7 +85,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
     {
         $jwt = $this->JWTManager->create($token->getUser());
 
-        return new RedirectResponse('http://localhost:4200/login?token=' . $jwt, 302);
+        return new RedirectResponse($_ENV['OAUTH_GITHUB_REDIRECTION'] . $jwt, 302);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
