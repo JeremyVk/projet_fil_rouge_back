@@ -12,3 +12,6 @@ app_logout:
     methods: GET
 api_refresh_token:
     path: /api/token/refresh
+connect_github_check:
+    path: /connect/github/check
+

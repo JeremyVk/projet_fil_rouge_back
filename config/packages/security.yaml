@@ -35,12 +35,15 @@ security:
             refresh_jwt:
                 check_path: /api/token/refresh
         main:
+            entry_point: form_login
             form_login:
                 login_path: login
                 check_path: login
             logout:
                 path: app_logout
             provider: app_user_provider
+            custom_authenticators:
+                - App\Security\GithubAuthenticator
 
     access_control:     
         # - { path: ^/api/login, roles: PUBLIC_ACCESS }
