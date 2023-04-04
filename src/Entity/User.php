@@ -92,6 +92,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read:users', 'write:users'])]
     private ?Collection $orders = null;
 
+    #[ORM\Column(name: 'github_id', length: 255, nullable: true)]
+    private ?string $githubId = null;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -222,5 +225,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getOrders(): ?Collection
     {
         return $this->orders;
+    }
+
+    public function  getGithubId(): ?string
+    {
+        return $this->githubId;
+    }
+
+    public function setGithubId(?string $githubId): void
+    {
+        $this->githubId = $githubId;
     }
 }
