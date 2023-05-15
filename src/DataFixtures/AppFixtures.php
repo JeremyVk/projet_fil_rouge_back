@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Address;
 use App\Entity\User;
 use App\Entity\Order;
+use App\Fixtures\BookAuthorFixture;
 use App\Fixtures\BookFixture;
 use App\Repository\BookRepository;
 use App\Fixtures\BookFormatFixture;
@@ -45,6 +46,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            BookAuthorFixture::class,
             BookFormatFixture::class,
             BookFixture::class,
         ];

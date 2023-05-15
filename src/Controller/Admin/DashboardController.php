@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Abstract\BaseArticle\BaseArticle;
+use App\Entity\Author\Author;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -63,6 +63,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Livres', '', Book::class),
             MenuItem::linkToCrud('Variants de livres', '', BookVariant::class),
             MenuItem::linkToCrud('Formats de livres', '', BookFormat::class),
+            MenuItem::linkToCrud('Auteurs', '', Author::class),
         ]);
 
         // yield MenuItem::linkToCrud('Livres', '', Book::class);

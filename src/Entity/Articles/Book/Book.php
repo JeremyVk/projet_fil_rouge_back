@@ -2,14 +2,13 @@
 
 namespace App\Entity\Articles\Book;
 
+use App\Entity\Author\Author;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
 use App\Entity\Abstract\BaseArticle\BaseArticle;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
-use App\Filters\AllBookSearchFilter;
-use App\Entity\Abstract\BaseVariant\BaseVariant;
 use App\Entity\Variants\BookVariant;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,8 +18,8 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:article', 'read:bookVariant', 'read:baseVariant']],
-    denormalizationContext: ['groups' => ['write:books']],
+    normalizationContext: ['groups' => ['read:article', 'read:bookVariant', 'read:baseVariant', 'read:books', 'read:book']],
+    denormalizationContext: ['groups' => ['write:books', "write:book"]],
     order: [ 'variants.stock' => 'DESC', 'variants.unitPrice' => 'ASC'],
     paginationEnabled: true,
     paginationItemsPerPage: 6
@@ -35,9 +34,14 @@ class Book extends BaseArticle
     #[Groups(['read:article', 'write:article'])]
     private Collection $variants;
 
+    #[ORM\ManyToMany(targetEntity: Author::class, mappedBy: 'books', cascade: ['persist'])]
+    #[Groups(['read:article'])]
+    private Collection $authors;
+
     public function __construct()
     {
         $this->variants = new ArrayCollection();
+        $this->authors = new ArrayCollection();
     }
     public function getEditor(): ?string
     {
@@ -73,4 +77,37 @@ class Book extends BaseArticle
             // set the owning side to null (unless already changed)
         }
     }
+
+    /**
+     * @return Collection
+     */
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
+    }
+
+    /**
+     * @param Collection $authors
+     */
+    public function setAuthors(Collection $authors): void
+    {
+        $this->authors = $authors;
+    }
+
+    public function addAuthor(Author $author): void
+    {
+        if (!$this->authors->contains($author)) {
+            $this->authors->add($author);
+            $author->addBook($this);
+        }
+    }
+
+    public function removeAuthor(Author $author): void
+    {
+        if ($this->authors->removeElement($author)) {
+            $author->removeBook($this);
+            // set the owning side to null (unless already changed)
+        }
+    }
+
 }
