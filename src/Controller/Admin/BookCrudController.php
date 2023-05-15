@@ -41,7 +41,7 @@ class BookCrudController extends AbstractCrudController
             TextField::new('title'),
             TextEditorField::new('resume'),
             AssociationField::new('variants'),
-            AssociationField::new('authors')->setFormTypeOption('by_reference', false),
+            AssociationField::new('authors')->setFormTypeOption('by_reference', false)->setRequired(true),
             TextField::new('editor'),
             ImageField::new('image')->setBasePath('/images/products')->setUploadDir('public/images/products')->setRequired(false)->setUploadedFileNamePattern('[contenthash].[extension]'),
         ];
