@@ -101,6 +101,9 @@ App\Entity\Variants\BookVariant:
   properties:
     isbnNumber:
       - NotNull: ~
+      - Isbn:
+          type: isbn13
+          message: Ce champ doit être de type ISBN13
     format:
       - NotNull: ~
     parent:
