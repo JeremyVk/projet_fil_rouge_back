@@ -12,10 +12,14 @@ use App\Fixtures\BookFormatFixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private BookRepository $bookRepository)
+    public function __construct(
+        private BookRepository $bookRepository,
+        private UserPasswordHasherInterface $passwordHasher,
+    )
     {
     }
     public function load(ObjectManager $manager): void
@@ -24,8 +28,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         // $manager->persist($product);
         $user = new User();
         $user->setEmail('jeremvk@outlook.fr');
-        $user->setPassword('aaaaa');
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword($this->passwordHasher->hashPassword($user, "password")); //password
+        $user->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
         $user->setFirstname('jeje');
         $user->setLastname('jeje');
         

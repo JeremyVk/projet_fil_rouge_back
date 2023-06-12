@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Fixtures;
 
+use App\Entity\Tax;
 use App\Entity\Variants\BookVariant;
 use Doctrine\Persistence\ObjectManager;
 use App\Repository\BookFormatRepository;
@@ -163,13 +164,20 @@ class BookFixture extends Fixture
         ],
     ];
 
-    public function __construct(private BookFormatRepository $bookFormatRepository)
+    public function __construct(
+        private BookFormatRepository $bookFormatRepository,
+    )
     {
     }
 
 
     public function load(ObjectManager $manager)
     {
+        $tax = new Tax();
+        $tax->setName("5.5%");
+        $tax->setAmount(0.055);
+
+        $manager->persist($tax);
         foreach(SELF::BOOKS as $dataBook) {
             $book = new Book();
             $book->setTitle($dataBook['title']);
@@ -185,6 +193,7 @@ class BookFixture extends Fixture
                     $newVariant->setIsbnNumber($variant['isbnNumber']);
                     $format = $this->bookFormatRepository->find($variant['format']);
                     $newVariant->setFormat($format);
+                    $newVariant->setTax($tax);
                     $book->addVariant($newVariant);
                 }
             }
