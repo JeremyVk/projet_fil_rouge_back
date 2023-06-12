@@ -190,7 +190,6 @@ class OrderServiceTest extends TestCase
             ->willReturn(null);
 
         $this->expectException(Exception::class);
-
         $this->orderService->getOrderItem(['id' => $itemId]);
     }
 }

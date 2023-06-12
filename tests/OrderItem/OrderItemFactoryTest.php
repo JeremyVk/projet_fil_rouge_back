@@ -57,6 +57,5 @@ class OrderItemFactoryTest extends TestCase
         $this->expectExceptionMessage(EcommerceErrorException::PRODUCT_STOCK_EMPTY);
 
         $orderItem = $this->orderItemFactory->buildOrderdItem($productVariant, 11);
-        $this->assertEquals(11, $productVariant->getStock());
     }
 }
