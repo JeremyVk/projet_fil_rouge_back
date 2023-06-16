@@ -21,8 +21,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationEntrypointInterface
 {
-
-
     public function __construct(
         private ClientRegistry $clientRegistry,
         private EntityManagerInterface $entityManager,
@@ -50,8 +48,6 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 /** @var GithubUser $githubUser */
                 $githubUser = $client->fetchUserFromToken($accessToken);
                 $email = $githubUser->getEmail();
-
-                // 1) have they logged in with Facebook before? Easy!
                 $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['githubId' => $githubUser->getId()]);
 
                 if ($existingUser) {

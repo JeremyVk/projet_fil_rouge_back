@@ -47,7 +47,7 @@ class Address
     #[Groups(['read:order'])]
     private ?string $postalCode = null;
 
-    #[ORM\ManyToOne(inversedBy: 'addresses', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'addresses', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['write:users'])]
     private ?User $user = null;
