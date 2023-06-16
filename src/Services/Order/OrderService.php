@@ -87,13 +87,13 @@ class OrderService
             $order->addOrderItem($this->getOrderItem($item));
         }
 
-        $this->entityManager->flush();
-        
         $order->setShippingAddress($shippingAddress);
         $order->setShippingAmount($orderData['shippingAmount']);
         $order->setCreatedAt(new DateTimeImmutable());
         $order->setAmount($this->calculateOrderTotalAmount($order));
         $order->setInvoice($this->invoiceFactory->generateInvoice($order));
+
+        $this->entityManager->flush();
 
         return $order;
     }

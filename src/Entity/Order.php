@@ -26,19 +26,19 @@ use App\Entity\Abstract\OrderItem\BaseOrderItemInterface;
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
     uriTemplate: '/users/{id}/orders',
+    operations: [ new GetCollection()],
     uriVariables: [
      'id' => new Link(
-         fromClass: User::class,
-         fromProperty: 'orders'
+         fromProperty: 'orders',
+         fromClass: User::class
      )
-     ],
-    operations: [ new GetCollection()]
+     ]
  )]
 #[Get(
-    name: 'invoice',
     uriTemplate: '/orders/{id}/invoice',
     controller: InvoiceController::class,
-    read: false
+    read: false,
+    name: 'invoice'
 )]
 class Order
 {

@@ -31,8 +31,7 @@ use App\Entity\Abstract\BaseVariant\BaseVariantInterface;
     paginationEnabled: true,
     paginationItemsPerPage: 6
 )]
-#[ApiFilter(SearchFilter::class, properties: ["format" => "exact"])]
-#[ApiFilter(AllBookSearchFilter::class, properties: ["format"])]
+#[ApiFilter(AllBookSearchFilter::class)]
 abstract class BaseArticle implements BaseArticleInterface
 {
     #[ORM\Id]
