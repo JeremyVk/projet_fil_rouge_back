@@ -33,9 +33,7 @@ final class AllBookSearchFilter extends AbstractFilter
 
             foreach($querys as $query) {
                 $queryBuilder
-                    ->andWhere("o.title LIKE :value")
-                    ->orWhere("a.firstname LIKE :value")
-                    ->orWhere("a.lastname LIKE :value")
+                    ->andWhere("o.title LIKE :value OR a.firstname LIKE :value OR a.lastname LIKE :value")
                     ->setParameter('value', "%" . $query . "%");
             } 
         }
