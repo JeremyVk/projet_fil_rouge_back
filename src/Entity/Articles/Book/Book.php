@@ -13,9 +13,6 @@ use App\Entity\Variants\BookVariant;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-
-// #[ApiFilter(AllBookSearchFilter::class, properties: ["title" => "partial", "resume" => "partial", "editor"])]
-
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['read:article', 'read:bookVariant', 'read:baseVariant', 'read:books', 'read:book']],

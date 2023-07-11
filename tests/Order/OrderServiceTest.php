@@ -176,7 +176,7 @@ class OrderServiceTest extends TestCase
             ->willReturn(null);
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("address not found");
+        $this->expectExceptionMessage("address.not.found");
 
         $this->orderService->buildOrder($order);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Repository\UserRepository;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,8 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
         private ClientRegistry $clientRegistry,
         private EntityManagerInterface $entityManager,
         private JWTTokenManagerInterface $JWTManager,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
+        private UserRepository $userRepository
     )
     {
 
@@ -48,13 +50,13 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 /** @var GithubUser $githubUser */
                 $githubUser = $client->fetchUserFromToken($accessToken);
                 $email = $githubUser->getEmail();
-                $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['githubId' => $githubUser->getId()]);
+                $existingUser = $this->userRepository->findOneBy(['githubId' => $githubUser->getId()]);
 
                 if ($existingUser) {
                     return $existingUser;
                 }
 
-                $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+                $user = $this->userRepository->findOneBy(['email' => $email]);
 
                 if (!$user) {
                     $user = new User();
