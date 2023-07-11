@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cfc45676-f124-4435-80f5-e2abdbbf1629" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/knpu_oauth2_client.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/knpu_oauth2_client.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/lexik_jwt_authentication.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/lexik_jwt_authentication.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Abstract/BaseArticle/BaseArticle.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Abstract/BaseArticle/BaseArticle.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Address.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Address.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Order.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Order.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Filters/AllBookSearchFilter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filters/AllBookSearchFilter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Security/GithubAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/GithubAuthenticator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Services/Order/OrderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/Order/OrderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Variants/BookVariant.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Variants/BookVariant.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

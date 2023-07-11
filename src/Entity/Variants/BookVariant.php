@@ -19,7 +19,7 @@ use App\Entity\Formats\BookFormat;
 )]
 class BookVariant extends BaseVariant
 {
-    #[ORM\Column(name: 'isbn_number', nullable: false)]
+    #[ORM\Column(name: 'isbn_number', nullable: false, type: 'bigint')]
     #[Groups(['read:article', 'write:books','read:bookVariant', 'write:bookVariant', 'read:order'])]
     private int $isbnNumber;
 
