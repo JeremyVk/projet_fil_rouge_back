@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class AllBookSearchFilter extends AbstractFilter
 {
-
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         if ($property === "formats") {
@@ -30,13 +29,14 @@ final class AllBookSearchFilter extends AbstractFilter
 
         if ($property === "query") {
             $querys = explode(" ", $value);
+            $queryBuilder->join("o.authors", "a");
 
             foreach($querys as $query) {
                 $queryBuilder
-                    ->andWhere("o.title LIKE :value")
+                    ->andWhere("o.title LIKE :value OR a.firstname LIKE :value OR a.lastname LIKE :value")
                     ->setParameter('value', "%" . $query . "%");
             } 
-        } 
+        }
 }
 
     // This function is only used to hook in documentation generators (supported by Swagger and Hydra)

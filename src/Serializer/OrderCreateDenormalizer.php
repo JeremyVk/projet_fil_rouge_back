@@ -3,6 +3,8 @@
 
 namespace App\Serializer;
 
+use ApiPlatform\Metadata\Post;
+use App\Entity\Order;
 use App\Services\Order\OrderService;
 use ApiPlatform\Api\IriConverterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -33,6 +35,6 @@ class OrderCreateDenormalizer implements DenormalizerInterface, DenormalizerAwar
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-       return $type === "App\Entity\Order";
+       return $type === Order::class && isset($context['operation']) && get_class($context['operation']) === Post::class;
     }
 }

@@ -42,7 +42,7 @@ class OrderService
     public function createOrder(array $orderData)
     {
         if (!$this-> isValidOrderData($orderData)) {
-            throw new Exception('The order is missing data');
+            throw new EcommerceErrorException('order.missing.data');
         }
 
         try {
@@ -80,7 +80,7 @@ class OrderService
         $shippingAddress = $this->addressRepository->find($orderData['shippingAddressId']);
 
         if(!$shippingAddress) {
-            throw new Exception("address not found");
+            throw new EcommerceErrorException(EcommerceErrorException::ADDRESS_NOT_FOUND);
         }
 
         foreach ($orderData['orderItems'] as $item) {
@@ -102,7 +102,7 @@ class OrderService
     {
         $productVariant = $this->productVariantRepository->find($item['id']);
         if (!$productVariant) {
-            throw new Exception("product variant with id: " . $item['id'] . " not found");
+            throw new EcommerceErrorException("product variant with id: " . $item['id'] . " not found");
         }
 
         return $this->orderItemFactory->buildOrderdItem($productVariant, $item['quantity']);

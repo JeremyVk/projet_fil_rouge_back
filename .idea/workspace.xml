@@ -4,8 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="cfc45676-f124-4435-80f5-e2abdbbf1629" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/src/Entity/Variants/BookVariant.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Variants/BookVariant.php" afterDir="false" />
+=======
+    <list default="true" id="cfc45676-f124-4435-80f5-e2abdbbf1629" name="Changes" comment="Book authors is now required in bo">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ResetPasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ResetPasswordController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Articles/Book/Book.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Articles/Book/Book.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Exceptions/EcommerceErrorException.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Exceptions/EcommerceErrorException.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Filters/AllBookSearchFilter.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Filters/AllBookSearchFilter.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Security/GithubAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/GithubAuthenticator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Serializer/OrderCreateDenormalizer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Serializer/OrderCreateDenormalizer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/Order/OrderService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/Order/OrderService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/State/UserPostProcessor.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/State/UserPostProcessor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Order/OrderServiceTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Order/OrderServiceTest.php" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +200,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;author&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;searchBookQuery&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/jeremykerckhove/Documents/cours-m2i/projet-fil-rouge/projet_fil_rouge_back&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -213,6 +228,12 @@
       <workItem from="1684128321619" duration="1301000" />
       <workItem from="1684129628458" duration="24753000" />
       <workItem from="1684998098626" duration="14911000" />
+      <workItem from="1687157666328" duration="1023000" />
+      <workItem from="1687774252407" duration="11996000" />
+      <workItem from="1688154267955" duration="10582000" />
+      <workItem from="1688750851213" duration="26000" />
+      <workItem from="1688751259820" duration="2315000" />
+      <workItem from="1689062755738" duration="1836000" />
     </task>
     <task id="LOCAL-00001" summary="Book authors is now required in bo">
       <created>1684139858834</created>
